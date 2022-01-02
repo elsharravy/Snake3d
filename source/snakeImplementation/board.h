@@ -20,6 +20,7 @@ enum Field
 	EMPTY = 0,
 	SNAKE = 1,
 	FOOD = 2,
+	WALL = 3,
 };
 
 // 

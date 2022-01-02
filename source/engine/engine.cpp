@@ -23,7 +23,7 @@
 
 #include <iostream>
 
-#define SNAKE_VELOCITY 6
+#define SNAKE_VELOCITY 5
 
 Engine::Engine(GLFWwindow* window) : window(window), lastFrameCursorPosX(400), lastFrameCursorPosY(300), firstMouseInput(true), clearColor(1.0, 1.0, 1.0, 0.0), snake( &board )
 {
@@ -296,6 +296,11 @@ void Engine::start()
 			else if(currentField == Field::FOOD)	// we eat food, we need another in random position in the world
 			{
 				generateRandomFood();
+			}
+			else if (currentField == Field::WALL)	// we eat food, we need another in random position in the world
+			{
+				cout << "Hit the wall" << endl;
+				glfwSetWindowShouldClose(window, true);
 			}
 		}
 

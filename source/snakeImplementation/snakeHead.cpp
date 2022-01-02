@@ -28,6 +28,10 @@ glm::ivec3 SnakeHead::calculateBoardPosition(glm::vec3 worldPosition)
 	boardCoords.y = worldPosition.y / FIELD_SIZE_Y;
 	boardCoords.z = worldPosition.z / FIELD_SIZE_Z;
 
+	if (worldPosition.x < 0) { boardCoords.x -= 1; }
+	if(worldPosition.y < 0) { boardCoords.y -= 1; }
+	if(worldPosition.z < 0) { boardCoords.z -= 1; }
+
 	return boardCoords;
 }
 
@@ -61,12 +65,23 @@ Field SnakeHead::move( float deltaTime, SnakeTail& tail)
 		// we say to snakeTail where it should go
 		tail.getQueue().push(movementDirection);
 
-		// check if we are colliding with anything
-		collisionField = board->getFieldState( newBoardPositionCoords + movementDirection );
+
+		// check if we hit the wall
+		glm::vec3 nextField = newBoardPositionCoords + movementDirection;
+	
+		if ((nextField.x >= BOARD_SIDE_SIZEX) || (nextField.y >= BOARD_SIDE_SIZEY) || (nextField.z >= BOARD_SIDE_SIZEZ) || (nextField.x < 0) || (nextField.y < 0) || (nextField.z < 0))
+		{
+			collisionField = Field::WALL;
+//			std::cout << nextField.x << " " << nextField.y << " " << nextField.z << std::endl;
+		}
+		else
+		{
+			// check with what we are colliding 
+			collisionField = board->getFieldState(nextField);
+		}
 
 		// flag field as traversed by snake
 		board->setFieldState(newBoardPositionCoords, Field::SNAKE);
-
 
 	}	
 

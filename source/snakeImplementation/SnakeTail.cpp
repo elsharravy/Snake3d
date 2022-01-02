@@ -83,6 +83,10 @@ glm::ivec3 SnakeTail::calculateBoardPosition(glm::vec3 worldPosition)
 	boardCoords.y = worldPosition.y / FIELD_SIZE_Y;
 	boardCoords.z = worldPosition.z / FIELD_SIZE_Z;
 
+	if (worldPosition.x < 0) { boardCoords.x -= 1; }
+	if (worldPosition.y < 0) { boardCoords.y -= 1; }
+	if (worldPosition.z < 0) { boardCoords.z -= 1; }
+
 	return boardCoords;
 }
 
