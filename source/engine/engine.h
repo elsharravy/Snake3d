@@ -17,6 +17,11 @@ class Engine
 {
 	static Engine* callbacksHelperEngine;
 
+	int keyForMovingMinusZAxis;
+	int keyForMovingPlusZAxis;
+	int keyForMovingMinusXAxis;
+	int keyForMovingPlusXAxis;
+
 	Board board;
 
 	bool isPpressed;
@@ -57,6 +62,8 @@ class Engine
 
 	void processInput();
 	void render();
+
+	void setMovingKeys( float angle );
 
 	void generateRandomFood();
 

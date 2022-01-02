@@ -32,6 +32,11 @@ Engine::Engine(GLFWwindow* window) : window(window), lastFrameCursorPosX(400), l
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
+	keyForMovingMinusXAxis = GLFW_KEY_A;
+	keyForMovingPlusXAxis =  GLFW_KEY_D;
+	keyForMovingMinusZAxis = GLFW_KEY_W;
+	keyForMovingPlusZAxis =  GLFW_KEY_S;
+
 	isPpressed = false;
 	pause = false;
 }
@@ -94,6 +99,8 @@ void Engine::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		if (glm::abs(xoffset) > glm::abs(yoffset))
 		{
 			callbacksHelperEngine->cam.addAngle(-xoffset);
+
+			callbacksHelperEngine->setMovingKeys(callbacksHelperEngine->cam.getAngle());
 		}
 		else
 		{
@@ -148,19 +155,19 @@ void Engine::processInput()
 
 	// moving snake
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(window, keyForMovingMinusZAxis) == GLFW_PRESS)
 	{
 		snake.requestDirectionChange(glm::ivec3(0, 0, -1) , glm::ivec3(0, 0, 1));
 	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	if (glfwGetKey(window, keyForMovingPlusZAxis) == GLFW_PRESS)
 	{
 		snake.requestDirectionChange(glm::ivec3(0, 0, 1), glm::ivec3(0, 0, 0));
 	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	if (glfwGetKey(window, keyForMovingMinusXAxis) == GLFW_PRESS)
 	{
 		snake.requestDirectionChange(glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0));
 	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	if (glfwGetKey(window, keyForMovingPlusXAxis) == GLFW_PRESS)
 	{
 		snake.requestDirectionChange(glm::ivec3(1, 0, 0), glm::ivec3(0, 0, 0));
 	}
@@ -178,7 +185,59 @@ void Engine::render()
 {
 	glClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
+void Engine::setMovingKeys(float angle)
+{
+//	 _______	zones inside cube
+//  |\ 2  / |
+//	|  \ / 3|	
+//	|1 / \  |
+//	| / 0 \ |
+//	 -------
+	angle += 45;
+
+	int zone = (( static_cast<int>( angle / 90) ) % 4);
+
+	if (angle < 0) { zone -= 1; }
+
+	switch (zone)
+	{
+	case 0:
+	{
+		keyForMovingMinusXAxis = GLFW_KEY_W;
+		keyForMovingPlusXAxis = GLFW_KEY_S;
+		keyForMovingMinusZAxis = GLFW_KEY_D;
+		keyForMovingPlusZAxis = GLFW_KEY_A;
+		break;
+	}
+	case 1:
+	{
+		keyForMovingMinusXAxis = GLFW_KEY_A;
+		keyForMovingPlusXAxis = GLFW_KEY_D;
+		keyForMovingMinusZAxis = GLFW_KEY_W;
+		keyForMovingPlusZAxis = GLFW_KEY_S;
+		break;
+	}
+	case 2:
+	{
+		keyForMovingMinusXAxis = GLFW_KEY_S;
+		keyForMovingPlusXAxis = GLFW_KEY_W;
+		keyForMovingMinusZAxis = GLFW_KEY_A;
+		keyForMovingPlusZAxis = GLFW_KEY_D;
+		break;
+	}
+	case 3:
+	{
+		keyForMovingMinusXAxis = GLFW_KEY_D;
+		keyForMovingPlusXAxis = GLFW_KEY_A;
+		keyForMovingMinusZAxis = GLFW_KEY_S;
+		keyForMovingPlusZAxis = GLFW_KEY_W;
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
