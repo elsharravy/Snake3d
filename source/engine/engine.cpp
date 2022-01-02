@@ -201,43 +201,35 @@ void Engine::setMovingKeys(float angle)
 
 	if (angle < 0) { zone -= 1; }
 
-	switch (zone)
-	{
-	case 0:
+	if ((zone == 0) || (zone == -4))
 	{
 		keyForMovingMinusXAxis = GLFW_KEY_W;
 		keyForMovingPlusXAxis = GLFW_KEY_S;
 		keyForMovingMinusZAxis = GLFW_KEY_D;
 		keyForMovingPlusZAxis = GLFW_KEY_A;
-		break;
 	}
-	case 1:
+	else if ((zone == 1) || (zone == -3))
 	{
 		keyForMovingMinusXAxis = GLFW_KEY_A;
 		keyForMovingPlusXAxis = GLFW_KEY_D;
 		keyForMovingMinusZAxis = GLFW_KEY_W;
 		keyForMovingPlusZAxis = GLFW_KEY_S;
-		break;
 	}
-	case 2:
+	else if ((zone == 2) || (zone == -2))
 	{
 		keyForMovingMinusXAxis = GLFW_KEY_S;
 		keyForMovingPlusXAxis = GLFW_KEY_W;
 		keyForMovingMinusZAxis = GLFW_KEY_A;
 		keyForMovingPlusZAxis = GLFW_KEY_D;
-		break;
 	}
-	case 3:
+	else if ((zone == 3) || (zone == -1))
 	{
 		keyForMovingMinusXAxis = GLFW_KEY_D;
 		keyForMovingPlusXAxis = GLFW_KEY_A;
 		keyForMovingMinusZAxis = GLFW_KEY_S;
 		keyForMovingPlusZAxis = GLFW_KEY_W;
-		break;
 	}
-	default:
-		break;
-	}
+
 }
 
 void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
