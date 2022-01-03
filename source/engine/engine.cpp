@@ -234,7 +234,8 @@ void Engine::setMovingKeys(float angle)
 
 void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-
+	callbacksHelperEngine->cam.addRadius(-yoffset);
+	callbacksHelperEngine->updateShadersViewMatrix();
 }
 
 void Engine::start()

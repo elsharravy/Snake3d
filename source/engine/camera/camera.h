@@ -16,6 +16,7 @@ class Camera
 	float angle;
 	float angleY;
 
+
 	glm::vec3 center;
 
 	glm::mat4 view;
@@ -34,6 +35,7 @@ class Camera
 
 	float angleSensitivity;
 	float angleYSensitivity;
+	float radiusSensitivity;
 
 	float speed;
 

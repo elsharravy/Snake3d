@@ -4,7 +4,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Camera::Camera(glm::vec3 pos) : view( glm::mat4(1.0f)), yaw(-90.0f), pitch(0.0f), pitchSensitivity(0.1f), yawSensitivity(0.1f), angleSensitivity(0.10f), angleYSensitivity(0.05f), speed(0.1f), radius( 20.0f ), angle( 90.0f ), angleY(45.0f)
+Camera::Camera(glm::vec3 pos) : view( glm::mat4(1.0f)), yaw(-90.0f), pitch(0.0f), pitchSensitivity(0.1f), yawSensitivity(0.1f), radiusSensitivity(0.5f), angleSensitivity(0.10f), angleYSensitivity(0.05f), speed(0.1f), radius( 20.0f ), angle( 90.0f ), angleY(45.0f)
 {
 	position = pos;
 
@@ -127,7 +127,7 @@ void Camera::addAngleY(float angleY)
 
 void Camera::addRadius(float radius)
 {
-	this->radius += radius;
+	this->radius += (radius * radiusSensitivity );
 
 	calculatePosition();
 }
