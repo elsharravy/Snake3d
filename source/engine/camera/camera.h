@@ -16,30 +16,18 @@ class Camera
 	float angle;
 	float angleY;
 
-
 	glm::vec3 center;
 
-	glm::mat4 view;
+	//transformation matrix
+	glm::mat4 view; 
 
 	glm::vec3 position;
-	glm::vec3 direction;	// direction we are looking at
-	glm::vec3 up;			// up vector for camera
-	
-	glm::vec3 pointWeAreLookingAt;
-
-	float pitch;
-	float yaw;
-
-	float pitchSensitivity;
-	float yawSensitivity;
+	// up vector for camera
+	glm::vec3 up;			
 
 	float angleSensitivity;
 	float angleYSensitivity;
 	float radiusSensitivity;
-
-	float speed;
-
-//	void updateDirection();
 
 	void calculatePosition();
 
@@ -49,11 +37,6 @@ public:
 
 	glm::mat4 getView( );
 	glm::vec3 getPosition();
-
-//	void move(glm::vec3 moveVector);
-	void moveBackward();
-	void moveForward();
-//	void updatePitchAndYaw(float pitchChange, float yawChange);
 
 	void setAngle(float angle);
 	void addAngle(float angle);

@@ -1,6 +1,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include <glm/vec4.hpp>
+
 struct Color
 {
 	float R;
@@ -10,7 +12,9 @@ struct Color
 
 	Color(float R, float G, float B, float A);
 
-	static Color Red();
+	static glm::vec4 Red;
+	static glm::vec4 Black;
+	static glm::vec4 White;
 };
 
 #endif

@@ -23,12 +23,6 @@ enum Field
 	WALL = 3,
 };
 
-// 
-//
-//
-//
-// 
-// 3d Board
 class Board
 {
 	std::vector<char> boardValues;

@@ -7,7 +7,6 @@ using namespace std;
 SnakeHead::SnakeHead(Board* board, glm::vec3 startingPos, glm::ivec3 startingMovementDirection, glm::ivec3 startingCompensationVector ) : worldPosition(startingPos), board(board), movementDirection(startingMovementDirection), movementDirectionRequested(startingMovementDirection), compensationVector(startingCompensationVector)
 {
 	snakeVelocity = 2;
-//	boardPositionPixels = worldPosition - board->getBoardPositionInWorld();
 	calculateMovementDirectionMultipliedWithVelocity();
 	boardPositionCoords = calculateBoardPosition( worldPosition );
 }
@@ -87,12 +86,6 @@ Field SnakeHead::move( float deltaTime, SnakeTail& tail)
 
 	this->boardPositionCoords = newBoardPositionCoords;
 
-	//cout << "----------------------\n";
-	//cout << "World coords: " << worldPosition.x << " " << worldPosition.y << " " << worldPosition.z << " \n" ;
-	//cout << "Board coords: " << boardPositionCoords.x << " " << boardPositionCoords.y << " " << boardPositionCoords.z << " \n" ;
-	//cout << deltaTime << "\n";
-	//cout << "----------------------" << endl;
-
 	return collisionField;
 }
 
@@ -116,8 +109,3 @@ void SnakeHead::setSnakeVelocity(float velocity)
 	this->snakeVelocity = velocity;
 	calculateMovementDirectionMultipliedWithVelocity();
 }
-
-//void SnakeHead::setCompensationVector(glm::ivec3 compensationVector)
-//{
-//	this->compensationVector = compensationVector;
-//}

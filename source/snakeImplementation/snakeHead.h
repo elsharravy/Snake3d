@@ -39,7 +39,6 @@ public:
 	void requestDirectionChange(glm::ivec3 movementDirection, glm::ivec3 compensationVector);
 	void draw(Cube& cube, ShaderProgram& shader);
 	void setSnakeVelocity(float velocity);
-//	void setCompensationVector(glm::ivec3 compensationVector);
 };
 
 #endif

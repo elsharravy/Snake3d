@@ -24,13 +24,14 @@ class Engine
 
 	Board board;
 
-	bool isPpressed;
+	// used for detecting when user release 'P' key
+	bool isKeyP_pressed;
 
 	Snake snake;
 
 	bool pause;
 
-	Color clearColor;
+	glm::vec4 clearColor;
 
 	GLFWwindow* window;
 
@@ -38,14 +39,10 @@ class Engine
 
 	glm::vec3 foodPos;
 
-	ShaderProgram shaderP;
 	ShaderProgram colorShader;
-	ShaderProgram backShader;
 
-	bool firstMouseInput;
-
-	float lastFrameCursorPosX;
-	float lastFrameCursorPosY;
+	double lastFrameCursorPosX;
+	double lastFrameCursorPosY;
 
 	float deltaTime;
 	float lastFrame;
@@ -55,12 +52,12 @@ class Engine
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-	void updateShadersViewMatrix();
-//	void updateShadersProjectionMatrix();
+	void updateViewMatrixInShaders();
 
 	void drawBorders(Line& line1, Line& line2, Line& line3, ShaderProgram& shader);
 
 	void processInput();
+
 	void render();
 
 	void setMovingKeys( float angle );

@@ -6,6 +6,7 @@
 #include "primitives/cube.h"
 #include "primitives/line.h"
 #include "primitives/Point3d.h"
+#include "colors/Color.h"
 #include "texture/texture.h"
 #include "Random/Random.h"
 #include "lightning/light.h"
@@ -25,9 +26,11 @@
 
 #define SNAKE_VELOCITY 5
 
-Engine::Engine(GLFWwindow* window) : window(window), lastFrameCursorPosX(400), lastFrameCursorPosY(300), firstMouseInput(true), clearColor(1.0, 1.0, 1.0, 0.0), snake( &board )
+Engine::Engine(GLFWwindow* window) : window(window),  clearColor(Color::White), snake( &board )
 {
 	callbacksHelperEngine = this;
+
+	glfwGetCursorPos(window, &lastFrameCursorPosX, &lastFrameCursorPosY);
 
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
@@ -37,7 +40,7 @@ Engine::Engine(GLFWwindow* window) : window(window), lastFrameCursorPosX(400), l
 	keyForMovingMinusZAxis = GLFW_KEY_W;
 	keyForMovingPlusZAxis =  GLFW_KEY_S;
 
-	isPpressed = false;
+	isKeyP_pressed = false;
 	pause = false;
 }
 
@@ -80,23 +83,14 @@ GLFWwindow* Engine::createWindow(int width, int height, const std::string& title
 
 void Engine::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (callbacksHelperEngine->firstMouseInput) // initially set to true
-	{
-		callbacksHelperEngine->lastFrameCursorPosX = xpos;
-		callbacksHelperEngine->lastFrameCursorPosY = ypos;
-		callbacksHelperEngine->firstMouseInput = false;
-	}
-	else
-	{
 		float xoffset = xpos - callbacksHelperEngine->lastFrameCursorPosX;
 		float yoffset = callbacksHelperEngine->lastFrameCursorPosY - ypos; // reversed since y-coordinates range from bottom to top
 
+		//updating cursor positions
 		callbacksHelperEngine->lastFrameCursorPosX = xpos;
 		callbacksHelperEngine->lastFrameCursorPosY = ypos;
 
-//		callbacksHelperEngine->cam.updatePitchAndYaw(yoffset, xoffset);
-
-		if (glm::abs(xoffset) > glm::abs(yoffset))
+		if (glm::abs(xoffset) > glm::abs(yoffset))	// did we moved mouse more in x axis that y axis
 		{
 			callbacksHelperEngine->cam.addAngle(-xoffset);
 
@@ -107,9 +101,7 @@ void Engine::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 			callbacksHelperEngine->cam.addAngleY(yoffset);
 		}
 
-		callbacksHelperEngine->updateShadersViewMatrix();
-	}
-
+		callbacksHelperEngine->updateViewMatrixInShaders();
 }
 
 void Engine::processInput()
@@ -122,35 +114,35 @@ void Engine::processInput()
 	{
 //		cam.move(glm::vec3(0.0f, 0.0f, -0.1f));
 //		cam.moveForward();
-		updateShadersViewMatrix();
+		updateViewMatrixInShaders();
 	}
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
 		//cam.move(glm::vec3(0.0f, 0.0f, 0.1f));
 //		cam.moveBackward();
-		updateShadersViewMatrix();
+		updateViewMatrixInShaders();
 	}	
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 //		cam.move(glm::vec3(-0.1f, 0.0f, 0.0f));
-		updateShadersViewMatrix();
+		updateViewMatrixInShaders();
 	}
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
 //		cam.move(glm::vec3(0.1f, 0.0f, 0.0f));
-		updateShadersViewMatrix();
+		updateViewMatrixInShaders();
 	}
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
 	{
-		isPpressed = true;
+		isKeyP_pressed = true;
 	}
 	else
 	{
-		if ( isPpressed )
+		if ( isKeyP_pressed )
 		{
 			pause = !pause;
 		}
-		isPpressed = false;
+		isKeyP_pressed = false;
 	}
 
 	// moving snake
@@ -183,7 +175,7 @@ void Engine::processInput()
 
 void Engine::render()
 {
-	glClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
+	glClearColor(clearColor.r, clearColor.g , clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -235,25 +227,18 @@ void Engine::setMovingKeys(float angle)
 void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	callbacksHelperEngine->cam.addRadius(-yoffset);
-	callbacksHelperEngine->updateShadersViewMatrix();
+	callbacksHelperEngine->updateViewMatrixInShaders();
 }
 
 void Engine::start()
 {
 	LOG("initialization start");
 
-	
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	board.setFieldState(i, 0, i, Field::SNAKE);
-	//}
 	generateRandomFood();
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glEnable(GL_DEPTH_TEST);
-
-//	cam.move(glm::vec3(5.0f, 21.0f, 16.0f));
 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -289,25 +274,13 @@ void Engine::start()
 	snakeFood.setTextureCoords(Vec2f(0.0f, 0.0f), Vec2f(1.0f, 0.0f), Vec2f(1.0f, 1.0f), Vec2f(0.0f, 1.0f));
 	snakeFood.setPosition(foodPos);
 
-	compileAndLinkShader(&shaderP, "resources/shaders/vShader.vs", "resources/shaders/fShader.fs");
 	compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
-	compileAndLinkShader(&backShader, "resources/shaders/back.vs", "resources/shaders/back.fs");
 
-	updateShadersViewMatrix();
-
-	shaderP.use();
-
-//	shaderP.setMatrix4("view", cam.getView() );
-
-	shaderP.setMatrix4("projection", projection);
+	updateViewMatrixInShaders();
 
 	colorShader.use();
-//	colorShader.setMatrix4("view", cam.getView());
+
 	colorShader.setMatrix4("projection", projection);
-
-	backShader.use();
-
-	backShader.setMatrix4("projection", projection);
 
 	snake.setSnakeVelocity(SNAKE_VELOCITY);
 	
@@ -317,15 +290,9 @@ void Engine::start()
 	
 	while (!glfwWindowShouldClose(window))
 	{
-//		cout << cam.getAngleY() << endl;
-
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
-		shaderP.use();
-
-		shaderP.setCameraPos(cam.getPosition());
 
 		processInput();
 
@@ -355,12 +322,10 @@ void Engine::start()
 				glfwSetWindowShouldClose(window, true);
 			}
 		}
-
 		snake.draw(snakeSegment, colorShader);
 
 		snakeFood.setPosition(foodPos);
 		snakeFood.draw(colorShader);
-
 
 		glfwSwapBuffers(window);
 
@@ -368,15 +333,10 @@ void Engine::start()
 	}
 }
 
-void Engine::updateShadersViewMatrix()
+void Engine::updateViewMatrixInShaders()
 {
-	shaderP.use();
-	shaderP.setMatrix4("view", cam.getView());
 	colorShader.use();
 	colorShader.setMatrix4("view", cam.getView());
-	backShader.use();
-	backShader.setMatrix4("view", cam.getView());
-
 }
 
 void Engine::drawBorders(Line& line1, Line& line2, Line& line3 , ShaderProgram& shader)
