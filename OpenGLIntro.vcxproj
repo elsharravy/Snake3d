@@ -179,6 +179,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\Game.cpp" />
     <ClCompile Include="source\snakeImplementation\Snake.cpp">
       <SubType>
       </SubType>
@@ -220,6 +221,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="source\snakeImplementation\Game.h" />
     <ClInclude Include="source\snakeImplementation\Snake.h">
       <SubType>
       </SubType>

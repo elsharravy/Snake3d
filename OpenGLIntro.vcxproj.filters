@@ -168,6 +168,9 @@
     <ClCompile Include="source\engine\Random\Random.cpp">
       <Filter>Pliki źródłowe\engine\Random</Filter>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\Game.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="source\engine\Random\Random.h">
       <Filter>Pliki nagłówkowe\engine\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\Game.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

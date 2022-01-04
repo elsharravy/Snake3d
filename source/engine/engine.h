@@ -9,6 +9,7 @@
 #include "../snakeImplementation/board.h"
 #include "../snakeImplementation/snakeHead.h"
 #include "../snakeImplementation/Snake.h"
+#include "../snakeImplementation/Game.h"
 #include "camera/camera.h"
 #include "colors/color.h"
 #include "shaders/shaderProgram.h"
@@ -17,29 +18,17 @@ class Engine
 {
 	static Engine* callbacksHelperEngine;
 
-	int keyForMovingMinusZAxis;
-	int keyForMovingPlusZAxis;
-	int keyForMovingMinusXAxis;
-	int keyForMovingPlusXAxis;
+	Game* game;
 
-	Board board;
-
-	// used for detecting when user release 'P' key
-	bool isKeyP_pressed;
-
-	Snake snake;
-
-	bool pause;
+	ShaderProgram colorShader;
 
 	glm::vec4 clearColor;
 
+	Line yAxis;
+	Line zAxis;
+	Line xAxis;
+
 	GLFWwindow* window;
-
-	Camera cam;
-
-	glm::vec3 foodPos;
-
-	ShaderProgram colorShader;
 
 	double lastFrameCursorPosX;
 	double lastFrameCursorPosY;
@@ -47,32 +36,27 @@ class Engine
 	float deltaTime;
 	float lastFrame;
 
-	void compileAndLinkShader(ShaderProgram* shader, const std::string& vertexShaderPath , const std::string& fragmentShaderPath);
-
 	static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-	void updateViewMatrixInShaders();
-
-	void drawBorders(Line& line1, Line& line2, Line& line3, ShaderProgram& shader);
-
-	void processInput();
-
+	void update();
 	void render();
 
-	void setMovingKeys( float angle );
-
-	void generateRandomFood();
+	void initializeAxes();
+	void drawAxes();
 
 public:
 	Engine(GLFWwindow* window);
+	~Engine();
 
 	static GLFWwindow* createWindow(int width, int height, const std::string& title);
 
 	void start();
 
+	void requestEngineClose();
+	void compileAndLinkShader(ShaderProgram* shader, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 
+	ShaderProgram& getColorShader();
 };
-
-
 #endif

@@ -9,6 +9,7 @@ Snake::Snake(Board* board) : board(board), head(board), tail(board), snakeVeloci
 
 void Snake::draw(Cube& cube, ShaderProgram& shader)
 {
+	
 	// drawing snake head
 	head.draw(cube, shader);
 

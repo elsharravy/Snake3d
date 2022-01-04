@@ -24,24 +24,23 @@
 
 #include <iostream>
 
-#define SNAKE_VELOCITY 5
-
-Engine::Engine(GLFWwindow* window) : window(window),  clearColor(Color::White), snake( &board )
+Engine::Engine(GLFWwindow* window) : window(window),  clearColor(Color::White),  yAxis(glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f)),
+zAxis(glm::vec3(0.0f, 0.0f, -100.0f), glm::vec3(0.0f, 0.0f, 100.0f)),
+xAxis(glm::vec3(-100.0f, 0.0f, 0.0f), glm::vec3(100.0f, 0.0f, 0.0f))
 {
 	callbacksHelperEngine = this;
 
-	glfwGetCursorPos(window, &lastFrameCursorPosX, &lastFrameCursorPosY);
+	initializeAxes();
 
+	glfwGetCursorPos(window, &lastFrameCursorPosX, &lastFrameCursorPosY);
+	
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
-
-	keyForMovingMinusXAxis = GLFW_KEY_A;
-	keyForMovingPlusXAxis =  GLFW_KEY_D;
-	keyForMovingMinusZAxis = GLFW_KEY_W;
-	keyForMovingPlusZAxis =  GLFW_KEY_S;
-
-	isKeyP_pressed = false;
-	pause = false;
+	glfwSetKeyCallback(window, key_callback);
+}
+Engine::~Engine()
+{
+	delete game;
 }
 
 void Engine::compileAndLinkShader(ShaderProgram* shader, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
@@ -90,163 +89,23 @@ void Engine::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		callbacksHelperEngine->lastFrameCursorPosX = xpos;
 		callbacksHelperEngine->lastFrameCursorPosY = ypos;
 
-		if (glm::abs(xoffset) > glm::abs(yoffset))	// did we moved mouse more in x axis that y axis
-		{
-			callbacksHelperEngine->cam.addAngle(-xoffset);
-
-			callbacksHelperEngine->setMovingKeys(callbacksHelperEngine->cam.getAngle());
-		}
-		else
-		{
-			callbacksHelperEngine->cam.addAngleY(yoffset);
-		}
-
-		callbacksHelperEngine->updateViewMatrixInShaders();
+		callbacksHelperEngine->game->mouseMovedEvent(window, xpos, ypos, xoffset, yoffset);
 }
 
-void Engine::processInput()
+void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, true);
-	}
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
-//		cam.move(glm::vec3(0.0f, 0.0f, -0.1f));
-//		cam.moveForward();
-		updateViewMatrixInShaders();
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		//cam.move(glm::vec3(0.0f, 0.0f, 0.1f));
-//		cam.moveBackward();
-		updateViewMatrixInShaders();
-	}	
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-//		cam.move(glm::vec3(-0.1f, 0.0f, 0.0f));
-		updateViewMatrixInShaders();
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-//		cam.move(glm::vec3(0.1f, 0.0f, 0.0f));
-		updateViewMatrixInShaders();
-	}
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-	{
-		isKeyP_pressed = true;
-	}
-	else
-	{
-		if ( isKeyP_pressed )
-		{
-			pause = !pause;
-		}
-		isKeyP_pressed = false;
-	}
-
-	// moving snake
-
-	if (glfwGetKey(window, keyForMovingMinusZAxis) == GLFW_PRESS)
-	{
-		snake.requestDirectionChange(glm::ivec3(0, 0, -1) , glm::ivec3(0, 0, 1));
-	}
-	if (glfwGetKey(window, keyForMovingPlusZAxis) == GLFW_PRESS)
-	{
-		snake.requestDirectionChange(glm::ivec3(0, 0, 1), glm::ivec3(0, 0, 0));
-	}
-	if (glfwGetKey(window, keyForMovingMinusXAxis) == GLFW_PRESS)
-	{
-		snake.requestDirectionChange(glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0));
-	}
-	if (glfwGetKey(window, keyForMovingPlusXAxis) == GLFW_PRESS)
-	{
-		snake.requestDirectionChange(glm::ivec3(1, 0, 0), glm::ivec3(0, 0, 0));
-	}
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-	{
-		snake.requestDirectionChange(glm::ivec3(0, 1, 0), glm::ivec3(0, 0, 0));
-	}
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-	{
-		snake.requestDirectionChange(glm::ivec3(0, -1, 0), glm::ivec3(0, 1, 0));
-	}
+	callbacksHelperEngine->game->keyEvent(window, key, scancode, action, mods);
 }
 
-void Engine::render()
+void Engine::drawAxes()
 {
-	glClearColor(clearColor.r, clearColor.g , clearColor.b, clearColor.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	xAxis.draw(colorShader);
+	yAxis.draw(colorShader);
+	zAxis.draw(colorShader);
 }
 
-void Engine::setMovingKeys(float angle)
+void Engine::initializeAxes()
 {
-//	 _______	zones inside cube
-//  |\ 2  / |
-//	|  \ / 3|	
-//	|1 / \  |
-//	| / 0 \ |
-//	 -------
-	angle += 45;
-
-	int zone = (( static_cast<int>( angle / 90) ) % 4);
-
-	if (angle < 0) { zone -= 1; }
-
-	if ((zone == 0) || (zone == -4))
-	{
-		keyForMovingMinusXAxis = GLFW_KEY_W;
-		keyForMovingPlusXAxis = GLFW_KEY_S;
-		keyForMovingMinusZAxis = GLFW_KEY_D;
-		keyForMovingPlusZAxis = GLFW_KEY_A;
-	}
-	else if ((zone == 1) || (zone == -3))
-	{
-		keyForMovingMinusXAxis = GLFW_KEY_A;
-		keyForMovingPlusXAxis = GLFW_KEY_D;
-		keyForMovingMinusZAxis = GLFW_KEY_W;
-		keyForMovingPlusZAxis = GLFW_KEY_S;
-	}
-	else if ((zone == 2) || (zone == -2))
-	{
-		keyForMovingMinusXAxis = GLFW_KEY_S;
-		keyForMovingPlusXAxis = GLFW_KEY_W;
-		keyForMovingMinusZAxis = GLFW_KEY_A;
-		keyForMovingPlusZAxis = GLFW_KEY_D;
-	}
-	else if ((zone == 3) || (zone == -1))
-	{
-		keyForMovingMinusXAxis = GLFW_KEY_D;
-		keyForMovingPlusXAxis = GLFW_KEY_A;
-		keyForMovingMinusZAxis = GLFW_KEY_S;
-		keyForMovingPlusZAxis = GLFW_KEY_W;
-	}
-
-}
-
-void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	callbacksHelperEngine->cam.addRadius(-yoffset);
-	callbacksHelperEngine->updateViewMatrixInShaders();
-}
-
-void Engine::start()
-{
-	LOG("initialization start");
-
-	generateRandomFood();
-
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	glEnable(GL_DEPTH_TEST);
-
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-	Line yAxis(glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f));
-	Line zAxis(glm::vec3(0.0f, 0.0f, -100.0f), glm::vec3(0.0f, 0.0f, 100.0f));
-	Line xAxis(glm::vec3(-100.0f, 0.0f, 0.0f), glm::vec3(100.0f, 0.0f, 0.0f));
-
 	xAxis.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
 	yAxis.setColor(glm::vec3(0.0f, 0.0f, 1.0f));
 	zAxis.setColor(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -254,136 +113,76 @@ void Engine::start()
 	xAxis.setWidth(5);
 	yAxis.setWidth(5);
 	zAxis.setWidth(5);
+}
 
-	Line border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f));
-	Line border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f));
-	Line border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f));
+void Engine::update()
+{
+	game->update(deltaTime);
+}
 
-	border.setColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	border2.setColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	border3.setColor(glm::vec3(0.0f, 0.0f, 0.0f));
+void Engine::render()
+{
+	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
+//	drawAxes();
 
-	Cube snakeSegment(1, 1, 1);
-	snakeSegment.setColor(glm::vec3(0.0f, 1.0f, 0.0f));
-	snakeSegment.setTextureCoords(Vec2f(0.0f, 0.0f), Vec2f(1.0f, 0.0f), Vec2f(1.0f, 1.0f), Vec2f(0.0f, 1.0f));
-//	snakeSegment.move( glm::vec3(0.0, 0.0, 0.0) );
+	game->render(colorShader);
 
-	Cube snakeFood(1, 1, 1);
-	snakeFood.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
-	snakeFood.setTextureCoords(Vec2f(0.0f, 0.0f), Vec2f(1.0f, 0.0f), Vec2f(1.0f, 1.0f), Vec2f(0.0f, 1.0f));
-	snakeFood.setPosition(foodPos);
+	glfwSwapBuffers(window);
+}
+
+
+void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	callbacksHelperEngine->game->scrollEvent(window, xoffset, yoffset);
+}
+
+void Engine::start()
+{
+	LOG("initialization start");
 
 	compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
 
-	updateViewMatrixInShaders();
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	colorShader.use();
+	glEnable(GL_DEPTH_TEST);
+	
+	int windowY;
+	int windowX;
+	glfwGetWindowSize(window, &windowX, &windowY);
+	glm::mat4 projection;
+	projection = glm::perspective(glm::radians(45.0f), static_cast<float>(windowX) / windowY, 0.1f, 100.0f);
 
-	colorShader.setMatrix4("projection", projection);
+	game = new Game(this);
 
-	snake.setSnakeVelocity(SNAKE_VELOCITY);
+	game->updateProjectionMatrixInShaders(projection);
 	
 	LOG("initializing end");
 
 	lastFrame = glfwGetTime();
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		processInput();
-
+		update();
 		render();
-
-		//xAxis.draw(colorShader);
-		//yAxis.draw(colorShader);
-		//zAxis.draw(colorShader);
-
-		drawBorders(border, border2, border3, colorShader);
-
-		if (!pause)
-		{
-			Field currentField = snake.move(deltaTime);
-
-			if (currentField == Field::SNAKE)	// we hit snake body, we lose
-			{
-				glfwSetWindowShouldClose(window, true);
-			}
-			else if(currentField == Field::FOOD)	// we eat food, we need another in random position in the world
-			{
-				generateRandomFood();
-			}
-			else if (currentField == Field::WALL)	// we eat food, we need another in random position in the world
-			{
-				cout << "Hit the wall" << endl;
-				glfwSetWindowShouldClose(window, true);
-			}
-		}
-		snake.draw(snakeSegment, colorShader);
-
-		snakeFood.setPosition(foodPos);
-		snakeFood.draw(colorShader);
-
-		glfwSwapBuffers(window);
 
 		glfwPollEvents();
 	}
 }
 
-void Engine::updateViewMatrixInShaders()
+void Engine::requestEngineClose()
 {
-	colorShader.use();
-	colorShader.setMatrix4("view", cam.getView());
+	glfwSetWindowShouldClose(window, true);
 }
 
-void Engine::drawBorders(Line& line1, Line& line2, Line& line3 , ShaderProgram& shader)
+ShaderProgram& Engine::getColorShader()
 {
-	// drawing border
-
-	line1.setPosition(glm::vec3(0, 0, 0));
-	line2.setPosition(glm::vec3(0, 0, 0));
-	line3.setPosition(glm::vec3(0, 0, 0));
-
-	line1.draw(shader);
-	line2.draw(shader);
-	line3.draw(shader);
-
-	line1.setPosition(glm::vec3(0, 0, 10));
-	line2.setPosition(glm::vec3(10, 0, 0));
-	line3.setPosition(glm::vec3(10, 0, 0));
-
-	line1.draw(shader);
-	line2.draw(shader);
-	line3.draw(shader);
-
-	line1.setPosition(glm::vec3(0, 10, 10));
-	line2.setPosition(glm::vec3(10, 0, 10));
-	line3.setPosition(glm::vec3(10, 10, 0));
-
-	line1.draw(shader);
-	line2.draw(shader);
-	line3.draw(shader);
-
-	line1.setPosition(glm::vec3(0, 10, 0));
-	line2.setPosition(glm::vec3(0, 0, 10));
-	line3.setPosition(glm::vec3(0, 10, 0));
-
-	line1.draw(shader);
-	line2.draw(shader);
-	line3.draw(shader);
-}
-
-void Engine::generateRandomFood()
-{
-	do
-	{
-		foodPos = glm::ivec3(Random::randInt(0, BOARD_SIDE_SIZEX), Random::randInt(0, BOARD_SIDE_SIZEY), Random::randInt(0, BOARD_SIDE_SIZEZ));
-	} while (board.getFieldState(foodPos) == Field::SNAKE);
-	
-	board.setFieldState(foodPos, Field::FOOD);
+	return colorShader;
 }
 
 Engine* Engine::callbacksHelperEngine = NULL;
