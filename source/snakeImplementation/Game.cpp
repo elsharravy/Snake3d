@@ -4,10 +4,18 @@
 #include "../engine/engine.h"
 
 #define SNAKE_INITIAL_VELOCITY 5
+#define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
 
-Game::Game(Engine* engine) : engine(engine), snake(&board), pause(false), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
-border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f))
+
+Game::Game(Engine* engine) : engine(engine), snake(&board), pause(true), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
+border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
+lightSource(0.2,0.2,0.2)
 {
+	initializeShaders();
+
+	lightSource.setPosition(LIGHT_INITIAL_POS);
+	lightSource.setColor(glm::vec3(1.0f, 1.0f, 0.0f));
+
 	generateRandomFood();
 	initializeKeySettings();
 	initializeSnake();
@@ -35,14 +43,13 @@ void Game::initializeKeySettings()
 void Game::initializeSnakeFood()
 {
 	snakeFood = new Cube(1, 1, 1);
-	snakeFood->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+	snakeFood->setColor(glm::vec3(0.45f, 0.02f, 0.06f));
 }
 
 void Game::initializeSnakeSegment()
 {
 	snakeSegment = new Cube(1, 1, 1);
-	snakeSegment->setColor(glm::vec3(0.0f, 1.0f, 0.0f));
-
+	snakeSegment->setColor(glm::vec3(0.02f, 0.29f, 0.003f));
 }
 
 void Game::initializeSnake()
@@ -50,11 +57,24 @@ void Game::initializeSnake()
 	snake.setSnakeVelocity(SNAKE_INITIAL_VELOCITY);
 }
 
-void Game::render(ShaderProgram& shader)
+void Game::initializeShaders()
 {
-	snakeFood->draw(shader);
-	snake.draw(*snakeSegment, shader);
-	drawBorders(shader);
+	engine->compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
+	engine->compileAndLinkShader(&lightSourceShader, "resources/shaders/lightSource.vs", "resources/shaders/lightSource.fs");
+
+	colorShader.use();
+	colorShader.setVec3("lightColor", glm::vec3( 1.0f,1.0f,1.0f ));
+	colorShader.setFloat( "ambientStrength" , 0.5 );
+	colorShader.setVec3("lightPos", LIGHT_INITIAL_POS);
+}
+
+void Game::render()
+{
+//	lightSource.draw(lightSourceShader);
+
+	snakeFood->draw(colorShader);
+	snake.draw(*snakeSegment, colorShader);
+	drawBorders(colorShader);
 }
 
 void Game::update(float deltaTime)
@@ -239,12 +259,18 @@ void Game::drawBorders( ShaderProgram& shader )
 
 void Game::updateViewMatrixInShaders()
 {
-	engine->getColorShader().use();
-	engine->getColorShader().setMatrix4("view", cam.getView());
+	colorShader.use();
+	colorShader.setMatrix4("view", cam.getView());
+
+	lightSourceShader.use();
+	lightSourceShader.setMatrix4("view", cam.getView());
 }
 
 void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
 {
-	engine->getColorShader().use();
-	engine->getColorShader().setMatrix4("projection", projection);
+	colorShader.use();
+	colorShader.setMatrix4("projection", projection);
+
+	lightSourceShader.use();
+	lightSourceShader.setMatrix4("projection", projection);
 }

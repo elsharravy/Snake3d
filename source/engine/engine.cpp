@@ -99,9 +99,9 @@ void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action,
 
 void Engine::drawAxes()
 {
-	xAxis.draw(colorShader);
-	yAxis.draw(colorShader);
-	zAxis.draw(colorShader);
+	xAxis.draw( game->getlightSourceShader() );
+	yAxis.draw(game->getlightSourceShader());
+	zAxis.draw(game->getlightSourceShader());
 }
 
 void Engine::initializeAxes()
@@ -127,7 +127,7 @@ void Engine::render()
 	
 //	drawAxes();
 
-	game->render(colorShader);
+	game->render();
 
 	glfwSwapBuffers(window);
 }
@@ -141,8 +141,6 @@ void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void Engine::start()
 {
 	LOG("initialization start");
-
-	compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -180,9 +178,5 @@ void Engine::requestEngineClose()
 	glfwSetWindowShouldClose(window, true);
 }
 
-ShaderProgram& Engine::getColorShader()
-{
-	return colorShader;
-}
 
 Engine* Engine::callbacksHelperEngine = NULL;

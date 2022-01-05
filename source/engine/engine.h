@@ -20,8 +20,6 @@ class Engine
 
 	Game* game;
 
-	ShaderProgram colorShader;
-
 	glm::vec4 clearColor;
 
 	Line yAxis;
@@ -56,7 +54,5 @@ public:
 
 	void requestEngineClose();
 	void compileAndLinkShader(ShaderProgram* shader, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
-
-	ShaderProgram& getColorShader();
 };
 #endif

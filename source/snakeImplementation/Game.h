@@ -6,13 +6,17 @@
 #include "../engine/camera/camera.h"
 #include "../engine/shaders/shaderProgram.h"
 #include "Snake.h"
-#include "board.h".h"
+#include "board.h"
+#include "../engine/macros.h"
 
 class Engine;
 
 class Game
 {
 	Engine* engine;
+
+	ShaderProgram colorShader;
+	ShaderProgram lightSourceShader;
 
 	Board board;
 	Snake snake;
@@ -22,6 +26,8 @@ class Game
 
 	Line border, border2, border3;
 	Cube* snakeSegment,* snakeFood;
+
+	Cube lightSource;
 
 	int keyForMovingMinusZAxis;
 	int keyForMovingPlusZAxis;
@@ -34,6 +40,7 @@ class Game
 	void initializeKeySettings();
 	void initializeSnakeSegment();
 	void initializeSnakeFood();
+	void initializeShaders();
 
 	void setMovingKeys(float angle);
 	void generateRandomFood();
@@ -44,7 +51,7 @@ public:
 	Game(Engine* engine);
 	~Game();
 
-	void render(ShaderProgram& shader);
+	void render();
 	void update( float deltaTime );
 
 	void gameOver();
@@ -54,6 +61,8 @@ public:
 	void scrollEvent(GLFWwindow* window, double xoffset, double yoffset);
 
 	void updateProjectionMatrixInShaders(glm::mat4 projection);
+
+	GETTER_REF(ShaderProgram, lightSourceShader);
 };
 
 #endif
