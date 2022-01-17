@@ -145,6 +145,9 @@ void Engine::start()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_BLEND);
+	glEnable(GL_PROGRAM_POINT_SIZE);	// enabling changing point size in shaders
 	
 	int windowY;
 	int windowX;

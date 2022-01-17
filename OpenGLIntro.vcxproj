@@ -161,12 +161,14 @@
     </ClCompile>
     <ClCompile Include="source\engine\cubemap\Cubemap.cpp" />
     <ClCompile Include="source\engine\engine.cpp" />
+    <ClCompile Include="source\engine\framebuffer\Framebuffer.cpp" />
     <ClCompile Include="source\engine\lightning\light.cpp" />
     <ClCompile Include="source\engine\lightning\material.cpp" />
     <ClCompile Include="source\engine\models\mesh.cpp" />
     <ClCompile Include="source\engine\models\model.cpp" />
     <ClCompile Include="source\engine\primitives\cube.cpp" />
     <ClCompile Include="source\engine\primitives\line.cpp" />
+    <ClCompile Include="source\engine\primitives\NDCquad.cpp" />
     <ClCompile Include="source\engine\primitives\Point3d.cpp" />
     <ClCompile Include="source\engine\primitives\triangle.cpp" />
     <ClCompile Include="source\engine\primitives\Vec2.cpp" />
@@ -203,6 +205,7 @@
     </ClInclude>
     <ClInclude Include="source\engine\cubemap\Cubemap.h" />
     <ClInclude Include="source\engine\engine.h" />
+    <ClInclude Include="source\engine\framebuffer\Framebuffer.h" />
     <ClInclude Include="source\engine\lightning\light.h" />
     <ClInclude Include="source\engine\lightning\material.h" />
     <ClInclude Include="source\engine\macros.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="source\engine\models\model.h" />
     <ClInclude Include="source\engine\primitives\cube.h" />
     <ClInclude Include="source\engine\primitives\line.h" />
+    <ClInclude Include="source\engine\primitives\NDCquad.h" />
     <ClInclude Include="source\engine\primitives\Point3d.h" />
     <ClInclude Include="source\engine\primitives\triangle.h" />
     <ClInclude Include="source\engine\primitives\Vec2.h" />

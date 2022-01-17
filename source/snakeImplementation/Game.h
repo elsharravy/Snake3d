@@ -3,29 +3,47 @@
 
 #include "../engine/primitives/line.h"
 #include "../engine/primitives/cube.h"
+#include "../engine/primitives/NDCquad.h"
 #include "../engine/camera/camera.h"
 #include "../engine/shaders/shaderProgram.h"
 #include "../engine/cubemap/cubemap.h"
+#include "../engine/framebuffer/framebuffer.h"
 #include "Snake.h"
 #include "board.h"
 #include "../engine/macros.h"
 
 class Engine;
 
+enum POST_PROCESSING_EFFECT
+{
+	NONE = 0,
+	COLOR_INVERSION = 1,
+	GRAYSCALE = 2,
+	KERNEL = 3,
+};
+
 class Game
 {
 	Engine* engine;
 
+	// shaders
 	ShaderProgram colorShader;
 	ShaderProgram lightSourceShader;
 	ShaderProgram cubemapShader;
+	ShaderProgram postProcessShader;
 
 	Board board;
 	Snake snake;
 	Camera cam;
 
+	// skybox
 	Cubemap skyBox;
 	Cube skyBoxCube;
+
+	// post processing
+	Framebuffer postProcessFramebuffer;
+	NDCquad postProcessScreen;
+	POST_PROCESSING_EFFECT activePostProcessEffect;
 
 	bool pause;
 
@@ -48,6 +66,7 @@ class Game
 	void initializeSnakeSegment();
 	void initializeSnakeFood();
 	void initializeShaders();
+	void initializePostProcessing();
 
 	void setMovingKeys(float angle);
 	void generateRandomFood();
@@ -68,6 +87,7 @@ public:
 	void mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset);
 	void keyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void scrollEvent(GLFWwindow* window, double xoffset, double yoffset);
+	void setPostProcessEffect(POST_PROCESSING_EFFECT effect);
 
 	void updateProjectionMatrixInShaders(glm::mat4 projection);
 

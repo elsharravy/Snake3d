@@ -97,6 +97,12 @@
     <Filter Include="Pliki źródłowe\engine\cubemap">
       <UniqueIdentifier>{aeeca58c-6724-4fa5-b35b-fb7b2a422ef2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\framebuffer">
+      <UniqueIdentifier>{d87423f0-05c9-4a89-aa47-dd8e234eec9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\framebuffer">
+      <UniqueIdentifier>{07cd003a-ea82-43f3-b169-ae955c3a26f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -180,6 +186,12 @@
     <ClCompile Include="source\engine\cubemap\Cubemap.cpp">
       <Filter>Pliki źródłowe\engine\cubemap</Filter>
     </ClCompile>
+    <ClCompile Include="source\engine\framebuffer\Framebuffer.cpp">
+      <Filter>Pliki źródłowe\engine\framebuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\primitives\NDCquad.cpp">
+      <Filter>Pliki źródłowe\engine\primitives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -259,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="source\engine\cubemap\Cubemap.h">
       <Filter>Pliki nagłówkowe\engine\cubemap</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\framebuffer\Framebuffer.h">
+      <Filter>Pliki nagłówkowe\engine\framebuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\primitives\NDCquad.h">
+      <Filter>Pliki nagłówkowe\engine\primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

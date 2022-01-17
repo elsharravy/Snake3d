@@ -19,6 +19,8 @@ lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 	initializeShaders();
 	initializeSkyBox();
 
+	initializePostProcessing();
+		
 	lightSource.setPosition(LIGHT_INITIAL_POS);
 	lightSource.setColor(glm::vec3(1.0f, 1.0f, 0.0f));
 
@@ -65,11 +67,20 @@ void Game::initializeCubeBorders()
 	border3.setColor(glm::vec3(1.0, 1.0, 1.0));
 }
 
+void Game::initializePostProcessing()
+{
+	postProcessFramebuffer.generate(1920, 1080);
+
+	setPostProcessEffect(POST_PROCESSING_EFFECT::NONE);
+}
+
 void Game::initializeSkyBox()
 {
 	std::vector<std::string> paths = { SKY_BOX_PATHS };
 
 	skyBox.load(paths);
+
+	skyBoxCube.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void Game::initializeSnake()
@@ -82,6 +93,7 @@ void Game::initializeShaders()
 	engine->compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
 	engine->compileAndLinkShader(&lightSourceShader, "resources/shaders/lightSource.vs", "resources/shaders/lightSource.fs");
 	engine->compileAndLinkShader(&cubemapShader, "resources/shaders/cubeMap.vs", "resources/shaders/cubeMap.fs");
+	engine->compileAndLinkShader(&postProcessShader, "resources/shaders/postProcess.vs", "resources/shaders/postProcess.fs");
 
 	colorShader.use();
 	colorShader.setVec3("lightColor", glm::vec3( 1.0f,1.0f,1.0f ));
@@ -94,13 +106,27 @@ void Game::initializeShaders()
 
 void Game::render()
 {
-//	lightSource.draw(lightSourceShader);
+	// switch to off screen framebuffer
+	postProcessFramebuffer.activateFramebuffer();
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
 
 	renderSkyBox();
 
 	snakeFood->draw(colorShader);
 	snake.draw(*snakeSegment, colorShader);
 	drawBorders(colorShader);
+
+	// draw quad to make postprocessing
+	glDisable(GL_DEPTH_TEST);
+	//binding default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	postProcessShader.use();
+	postProcessFramebuffer.activateTexture();
+	postProcessScreen.draw(postProcessShader);
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Game::update(float deltaTime)
@@ -190,6 +216,22 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 	else if (key == GLFW_KEY_ESCAPE)
 	{
 		engine->requestEngineClose();
+	}
+	else if (key == GLFW_KEY_KP_0)
+	{
+		setPostProcessEffect(POST_PROCESSING_EFFECT::NONE);
+	}
+	else if (key == GLFW_KEY_KP_1)
+	{
+		setPostProcessEffect(POST_PROCESSING_EFFECT::COLOR_INVERSION);
+	}
+	else if (key == GLFW_KEY_KP_2)
+	{
+		setPostProcessEffect(POST_PROCESSING_EFFECT::GRAYSCALE);
+	}
+	else if (key == GLFW_KEY_KP_3)
+	{
+		setPostProcessEffect(POST_PROCESSING_EFFECT::KERNEL);
 	}
 
 }
@@ -315,4 +357,12 @@ void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
 
 	cubemapShader.use();
 	cubemapShader.setMatrix4("projection", projection);
+}
+
+
+void Game::setPostProcessEffect(POST_PROCESSING_EFFECT effect)
+{
+	activePostProcessEffect = effect;
+	postProcessShader.use();
+	postProcessShader.setInt("postProcessEffect", effect);
 }
