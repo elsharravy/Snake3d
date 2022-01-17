@@ -6,12 +6,16 @@
 #define SNAKE_INITIAL_VELOCITY 5
 #define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
 
+#define SKY_BOX_PATHS "resources/textures/skybox/right.png", "resources/textures/skybox/left.png","resources/textures/skybox/top.png", \
+"resources/textures/skybox/bottom.png", "resources/textures/skybox/front.png", "resources/textures/skybox/back.png"
+
 
 Game::Game(Engine* engine) : engine(engine), snake(&board), pause(true), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
-lightSource(0.2,0.2,0.2)
+lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 {
 	initializeShaders();
+	initializeSkyBox();
 
 	lightSource.setPosition(LIGHT_INITIAL_POS);
 	lightSource.setColor(glm::vec3(1.0f, 1.0f, 0.0f));
@@ -52,6 +56,13 @@ void Game::initializeSnakeSegment()
 	snakeSegment->setColor(glm::vec3(0.02f, 0.29f, 0.003f));
 }
 
+void Game::initializeSkyBox()
+{
+	std::vector<std::string> paths = { SKY_BOX_PATHS };
+
+	skyBox.load(paths);
+}
+
 void Game::initializeSnake()
 {
 	snake.setSnakeVelocity(SNAKE_INITIAL_VELOCITY);
@@ -61,16 +72,22 @@ void Game::initializeShaders()
 {
 	engine->compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
 	engine->compileAndLinkShader(&lightSourceShader, "resources/shaders/lightSource.vs", "resources/shaders/lightSource.fs");
+	engine->compileAndLinkShader(&cubemapShader, "resources/shaders/cubeMap.vs", "resources/shaders/cubeMap.fs");
 
 	colorShader.use();
 	colorShader.setVec3("lightColor", glm::vec3( 1.0f,1.0f,1.0f ));
 	colorShader.setFloat( "ambientStrength" , 0.5 );
 	colorShader.setVec3("lightPos", LIGHT_INITIAL_POS);
+
+	cubemapShader.use();
+	cubemapShader.setInt("cubemap", 0);
 }
 
 void Game::render()
 {
 //	lightSource.draw(lightSourceShader);
+
+	renderSkyBox();
 
 	snakeFood->draw(colorShader);
 	snake.draw(*snakeSegment, colorShader);
@@ -105,6 +122,15 @@ void Game::update(float deltaTime)
 void Game::gameOver()
 {
 	engine->requestEngineClose();
+}
+
+void Game::renderSkyBox()
+{
+	glDepthMask(GL_FALSE);
+	glActiveTexture(GL_TEXTURE0);
+	skyBox.activate();
+	skyBoxCube.draw(cubemapShader);
+	glDepthMask(GL_TRUE);
 }
 
 void Game::mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset)
@@ -264,6 +290,10 @@ void Game::updateViewMatrixInShaders()
 
 	lightSourceShader.use();
 	lightSourceShader.setMatrix4("view", cam.getView());
+
+	cubemapShader.use();
+	glm::mat4 viewCubeMap = glm::mat4(glm::mat3(cam.getView()));
+	cubemapShader.setMatrix4("view", viewCubeMap);
 }
 
 void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
@@ -273,4 +303,7 @@ void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
 
 	lightSourceShader.use();
 	lightSourceShader.setMatrix4("projection", projection);
+
+	cubemapShader.use();
+	cubemapShader.setMatrix4("projection", projection);
 }

@@ -91,6 +91,12 @@
     <Filter Include="Pliki źródłowe\engine\Random">
       <UniqueIdentifier>{9558ab87-c358-454f-8087-598a376f9221}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\cubemap">
+      <UniqueIdentifier>{7580db83-7f1d-414d-8129-033a647118f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\cubemap">
+      <UniqueIdentifier>{aeeca58c-6724-4fa5-b35b-fb7b2a422ef2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -171,6 +177,9 @@
     <ClCompile Include="source\snakeImplementation\Game.cpp">
       <Filter>Pliki źródłowe\snakeImplementation</Filter>
     </ClCompile>
+    <ClCompile Include="source\engine\cubemap\Cubemap.cpp">
+      <Filter>Pliki źródłowe\engine\cubemap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -247,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="source\snakeImplementation\Game.h">
       <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\cubemap\Cubemap.h">
+      <Filter>Pliki nagłówkowe\engine\cubemap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

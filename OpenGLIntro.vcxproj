@@ -159,6 +159,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="source\engine\cubemap\Cubemap.cpp" />
     <ClCompile Include="source\engine\engine.cpp" />
     <ClCompile Include="source\engine\lightning\light.cpp" />
     <ClCompile Include="source\engine\lightning\material.cpp" />
@@ -200,6 +201,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="source\engine\cubemap\Cubemap.h" />
     <ClInclude Include="source\engine\engine.h" />
     <ClInclude Include="source\engine\lightning\light.h" />
     <ClInclude Include="source\engine\lightning\material.h" />

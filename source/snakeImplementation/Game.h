@@ -5,6 +5,7 @@
 #include "../engine/primitives/cube.h"
 #include "../engine/camera/camera.h"
 #include "../engine/shaders/shaderProgram.h"
+#include "../engine/cubemap/cubemap.h"
 #include "Snake.h"
 #include "board.h"
 #include "../engine/macros.h"
@@ -17,10 +18,14 @@ class Game
 
 	ShaderProgram colorShader;
 	ShaderProgram lightSourceShader;
+	ShaderProgram cubemapShader;
 
 	Board board;
 	Snake snake;
 	Camera cam;
+
+	Cubemap skyBox;
+	Cube skyBoxCube;
 
 	bool pause;
 
@@ -36,6 +41,7 @@ class Game
 
 	glm::vec3 foodPos;
 
+	void initializeSkyBox();
 	void initializeSnake();
 	void initializeKeySettings();
 	void initializeSnakeSegment();
@@ -55,6 +61,8 @@ public:
 	void update( float deltaTime );
 
 	void gameOver();
+
+	void renderSkyBox();
 
 	void mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset);
 	void keyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
