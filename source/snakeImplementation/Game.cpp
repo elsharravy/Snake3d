@@ -14,6 +14,8 @@ Game::Game(Engine* engine) : engine(engine), snake(&board), pause(true), border(
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
 lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 {
+	initializeCubeBorders();
+
 	initializeShaders();
 	initializeSkyBox();
 
@@ -54,6 +56,13 @@ void Game::initializeSnakeSegment()
 {
 	snakeSegment = new Cube(1, 1, 1);
 	snakeSegment->setColor(glm::vec3(0.02f, 0.29f, 0.003f));
+}
+
+void Game::initializeCubeBorders()
+{
+	border.setColor(glm::vec3(1.0, 1.0, 1.0));
+	border2.setColor(glm::vec3(1.0, 1.0, 1.0));
+	border3.setColor(glm::vec3(1.0, 1.0, 1.0));
 }
 
 void Game::initializeSkyBox()

@@ -42,6 +42,7 @@ class Game
 	glm::vec3 foodPos;
 
 	void initializeSkyBox();
+	void initializeCubeBorders();
 	void initializeSnake();
 	void initializeKeySettings();
 	void initializeSnakeSegment();
