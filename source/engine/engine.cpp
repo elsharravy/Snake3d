@@ -16,6 +16,9 @@
 #include "macros.h"
 #include "models/model.h"
 
+#include "../snakeImplementation/Game.h"
+
+
 #include "../stb_image/stb_image.h"
 
 #include <glm/matrix.hpp>
@@ -155,7 +158,8 @@ void Engine::start()
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(45.0f), static_cast<float>(windowX) / windowY, 0.1f, 100.0f);
 
-	game = new Game(this);
+	gameManager = new GameManager(this);
+	game = gameManager->getgame();
 
 	game->updateProjectionMatrixInShaders(projection);
 	

@@ -9,15 +9,18 @@
 #include "../snakeImplementation/board.h"
 #include "../snakeImplementation/snakeHead.h"
 #include "../snakeImplementation/Snake.h"
-#include "../snakeImplementation/Game.h"
+#include "../snakeImplementation/GameManager.h"
 #include "camera/camera.h"
 #include "colors/color.h"
 #include "shaders/shaderProgram.h"
+
+class Game;
 
 class Engine
 {
 	static Engine* callbacksHelperEngine;
 
+	GameManager* gameManager;
 	Game* game;
 
 	glm::vec4 clearColor;

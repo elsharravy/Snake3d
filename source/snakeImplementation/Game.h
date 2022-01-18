@@ -47,6 +47,7 @@ class Game
 
 	bool pause;
 
+
 	Line border, border2, border3;
 	Cube* snakeSegment,* snakeFood;
 

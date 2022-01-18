@@ -183,6 +183,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="source\snakeImplementation\Game.cpp" />
+    <ClCompile Include="source\snakeImplementation\GameManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\snakeImplementation\GameMenu.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\snakeImplementation\Snake.cpp">
       <SubType>
       </SubType>
@@ -228,6 +236,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="source\snakeImplementation\Game.h" />
+    <ClInclude Include="source\snakeImplementation\GameManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\GameMenu.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\snakeImplementation\Snake.h">
       <SubType>
       </SubType>

@@ -106,27 +106,31 @@ void Game::initializeShaders()
 
 void Game::render()
 {
-	// switch to off screen framebuffer
-	postProcessFramebuffer.activateFramebuffer();
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 
-	renderSkyBox();
+		// switch to off screen framebuffer
+		postProcessFramebuffer.activateFramebuffer();
+		glClearColor(1.0, 1.0, 1.0, 1.0);
+		glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	snakeFood->draw(colorShader);
-	snake.draw(*snakeSegment, colorShader);
-	drawBorders(colorShader);
 
-	// draw quad to make postprocessing
-	glDisable(GL_DEPTH_TEST);
-	//binding default framebuffer
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	postProcessShader.use();
-	postProcessFramebuffer.activateTexture();
-	postProcessScreen.draw(postProcessShader);
+		renderSkyBox();
 
-	glEnable(GL_DEPTH_TEST);
+		snakeFood->draw(colorShader);
+		snake.draw(*snakeSegment, colorShader);
+		drawBorders(colorShader);
+
+		// draw quad to make postprocessing
+		glDisable(GL_DEPTH_TEST);
+		//binding default framebuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		postProcessShader.use();
+		postProcessFramebuffer.activateTexture();
+		postProcessScreen.draw(postProcessShader);
+
+		glEnable(GL_DEPTH_TEST);
+
+	
 }
 
 void Game::update(float deltaTime)
@@ -217,19 +221,19 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 	{
 		engine->requestEngineClose();
 	}
-	else if (key == GLFW_KEY_KP_0)
+	else if (key == GLFW_KEY_KP_0 && action == GLFW_RELEASE)
 	{
 		setPostProcessEffect(POST_PROCESSING_EFFECT::NONE);
 	}
-	else if (key == GLFW_KEY_KP_1)
+	else if (key == GLFW_KEY_KP_1 && action == GLFW_RELEASE)
 	{
 		setPostProcessEffect(POST_PROCESSING_EFFECT::COLOR_INVERSION);
 	}
-	else if (key == GLFW_KEY_KP_2)
+	else if (key == GLFW_KEY_KP_2 && action == GLFW_RELEASE)
 	{
 		setPostProcessEffect(POST_PROCESSING_EFFECT::GRAYSCALE);
 	}
-	else if (key == GLFW_KEY_KP_3)
+	else if (key == GLFW_KEY_KP_3 && action == GLFW_RELEASE)
 	{
 		setPostProcessEffect(POST_PROCESSING_EFFECT::KERNEL);
 	}

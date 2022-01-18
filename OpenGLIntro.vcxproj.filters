@@ -192,6 +192,12 @@
     <ClCompile Include="source\engine\primitives\NDCquad.cpp">
       <Filter>Pliki źródłowe\engine\primitives</Filter>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\GameMenu.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snakeImplementation\GameManager.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -277,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="source\engine\primitives\NDCquad.h">
       <Filter>Pliki nagłówkowe\engine\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\GameMenu.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\GameManager.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
