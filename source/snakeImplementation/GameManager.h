@@ -10,16 +10,16 @@ class Game;
 class GameMenu;
 enum POST_PROCESSING_EFFECT;
 
+enum GameState
+{
+	MENU,
+	GAME,
+};
+
 class GameManager
 {
 	GameMenu* gameMenu;
 	Game* game;
-
-	enum GameState
-	{
-		MENU,
-		GAME,
-	};
 
 	GameState state;
 
@@ -37,6 +37,8 @@ public:
 	void setPostProcessEffect(POST_PROCESSING_EFFECT effect);
 	
 	GETTER(Game*, game);
+	GETTER(GameState, state);
+	SETTER(GameState, state);
 };
 
 #endif

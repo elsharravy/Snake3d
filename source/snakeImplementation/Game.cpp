@@ -2,6 +2,7 @@
 
 #include "../engine/Random/Random.h"
 #include "../engine/engine.h"
+#include "GameManager.h"
 
 #define SNAKE_INITIAL_VELOCITY 5
 #define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
@@ -10,7 +11,7 @@
 "resources/textures/skybox/bottom.png", "resources/textures/skybox/front.png", "resources/textures/skybox/back.png"
 
 
-Game::Game(Engine* engine) : engine(engine), snake(&board), pause(true), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
+Game::Game(Engine* engine,GameManager* gameManager) : engine(engine), gameManager(gameManager),  snake(&board), pause(true), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
 lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 {
@@ -236,6 +237,10 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 	else if (key == GLFW_KEY_KP_3 && action == GLFW_RELEASE)
 	{
 		setPostProcessEffect(POST_PROCESSING_EFFECT::KERNEL);
+	}
+	else if (key == GLFW_KEY_M && action == GLFW_RELEASE)
+	{
+		gameManager->setstate( GameState::MENU );
 	}
 
 }

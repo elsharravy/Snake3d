@@ -13,6 +13,8 @@
 #include "../engine/macros.h"
 
 class Engine;
+class GameManager;
+
 
 enum POST_PROCESSING_EFFECT
 {
@@ -25,6 +27,7 @@ enum POST_PROCESSING_EFFECT
 class Game
 {
 	Engine* engine;
+	GameManager* gameManager;
 
 	// shaders
 	ShaderProgram colorShader;
@@ -75,7 +78,7 @@ class Game
 	void drawBorders(ShaderProgram& shader);
 	void updateViewMatrixInShaders();
 public:
-	Game(Engine* engine);
+	Game(Engine* engine, GameManager* gameManager);
 	~Game();
 
 	void render();

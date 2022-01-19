@@ -5,7 +5,7 @@
 
 GameManager::GameManager(Engine* engine) : state ( GameState::GAME )
 {
-	game = new Game(engine);
+	game = new Game(engine, this);
 	gameMenu = new GameMenu();
 }
 
@@ -21,10 +21,10 @@ void GameManager::render()
 {
 	switch (state)
 	{
-	case GameManager::MENU:
+	case GameState::MENU:
 		gameMenu->render();
 		break;
-	case GameManager::GAME:
+	case GameState::GAME:
 		game->render();
 		break;
 	default:
@@ -35,10 +35,10 @@ void GameManager::update(float deltaTime)
 {
 	switch (state)
 	{
-	case GameManager::MENU:
+	case GameState::MENU:
 		gameMenu->update(deltaTime);
 		break;
-	case GameManager::GAME:
+	case GameState::GAME:
 		game->update(deltaTime);
 		break;
 	default:
@@ -50,10 +50,10 @@ void GameManager::mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, 
 {
 	switch (state)
 	{
-	case GameManager::MENU:
+	case GameState::MENU:
 		gameMenu->mouseMovedEvent(window, xpos, ypos , xoffset, yoffset);
 		break;
-	case GameManager::GAME:
+	case GameState::GAME:
 		game->mouseMovedEvent(window, xpos, ypos, xoffset, yoffset);
 		break;
 	default:
@@ -65,10 +65,10 @@ void GameManager::keyEvent(GLFWwindow* window, int key, int scancode, int action
 {
 	switch (state)
 	{
-	case GameManager::MENU:
+	case GameState::MENU:
 		gameMenu->keyEvent(window, key, scancode, action, mods);
 		break;
-	case GameManager::GAME:
+	case GameState::GAME:
 		game->keyEvent(window, key, scancode, action, mods);
 		break;
 	default:
@@ -80,10 +80,10 @@ void GameManager::scrollEvent(GLFWwindow* window, double xoffset, double yoffset
 {
 	switch (state)
 	{
-	case GameManager::MENU:
+	case GameState::MENU:
 		gameMenu->scrollEvent( window,  xoffset,  yoffset);
 		break;
-	case GameManager::GAME:
+	case GameState::GAME:
 		game->scrollEvent(window, xoffset, yoffset);
 		break;
 	default:
@@ -95,10 +95,10 @@ void GameManager::setPostProcessEffect(POST_PROCESSING_EFFECT effect)
 {
 	switch (state)
 	{
-	case GameManager::MENU:
+	case GameState::MENU:
 		gameMenu->setPostProcessEffect(effect);
 		break;
-	case GameManager::GAME:
+	case GameState::GAME:
 		game->setPostProcessEffect(effect);
 	default:
 		break;

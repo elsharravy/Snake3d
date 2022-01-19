@@ -92,12 +92,12 @@ void Engine::mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		callbacksHelperEngine->lastFrameCursorPosX = xpos;
 		callbacksHelperEngine->lastFrameCursorPosY = ypos;
 
-		callbacksHelperEngine->game->mouseMovedEvent(window, xpos, ypos, xoffset, yoffset);
+		callbacksHelperEngine->gameManager->mouseMovedEvent(window, xpos, ypos, xoffset, yoffset);
 }
 
 void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	callbacksHelperEngine->game->keyEvent(window, key, scancode, action, mods);
+	callbacksHelperEngine->gameManager->keyEvent(window, key, scancode, action, mods);
 }
 
 void Engine::drawAxes()
@@ -120,7 +120,7 @@ void Engine::initializeAxes()
 
 void Engine::update()
 {
-	game->update(deltaTime);
+	gameManager->update(deltaTime);
 }
 
 void Engine::render()
@@ -130,7 +130,7 @@ void Engine::render()
 	
 //	drawAxes();
 
-	game->render();
+	gameManager->render();
 
 	glfwSwapBuffers(window);
 }
@@ -138,7 +138,7 @@ void Engine::render()
 
 void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	callbacksHelperEngine->game->scrollEvent(window, xoffset, yoffset);
+	callbacksHelperEngine->gameManager->scrollEvent(window, xoffset, yoffset);
 }
 
 void Engine::start()
