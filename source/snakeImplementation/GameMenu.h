@@ -3,12 +3,27 @@
 
 #include "../glfw/Glfw.h"
 
+#include "../engine/shaders/shaderProgram.h"
+#include "../engine/fonts/Fonts.h"
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/matrix.hpp>
+
+class GameManager;
+class Engine;
 enum POST_PROCESSING_EFFECT;
 
 class GameMenu
 {
+	GameManager* gameManager;
+	Engine* engine;
+	Font font;
+	ShaderProgram textShader;
 
+	glm::mat4 projection;
 public:
+	GameMenu(GameManager* gameManager, Engine* engine);
+	
 	void render();
 	void update(float deltaTime);
 

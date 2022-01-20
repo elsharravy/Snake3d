@@ -2,6 +2,7 @@
 
 #include "../engine/Random/Random.h"
 #include "../engine/engine.h"
+
 #include "GameManager.h"
 
 #define SNAKE_INITIAL_VELOCITY 5

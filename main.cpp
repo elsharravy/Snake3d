@@ -23,7 +23,6 @@
 
 int main()
 {
-
 //	stbi_set_flip_vertically_on_load(true);
 
 	bool GLFWResult = Glfw::initGlfw(MAJOR_OPENGL_VERSION, MINOR_OPENGL_VERSION, GLFW_OPENGL_CORE_PROFILE);

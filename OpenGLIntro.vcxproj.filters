@@ -103,6 +103,18 @@
     <Filter Include="Pliki źródłowe\engine\framebuffer">
       <UniqueIdentifier>{07cd003a-ea82-43f3-b169-ae955c3a26f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\resources">
+      <UniqueIdentifier>{0a787b9a-1977-4fab-9e27-77108e6d2865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\resources">
+      <UniqueIdentifier>{0a3f31ee-fac4-4260-ae9f-8eaf029d0565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\fonts">
+      <UniqueIdentifier>{a1bda792-26a9-4136-b5ba-c7eb90543fff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\fonts">
+      <UniqueIdentifier>{06536fae-4aa2-4b76-a6d8-af990825988c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -198,6 +210,9 @@
     <ClCompile Include="source\snakeImplementation\GameManager.cpp">
       <Filter>Pliki źródłowe\snakeImplementation</Filter>
     </ClCompile>
+    <ClCompile Include="source\engine\fonts\Fonts.cpp">
+      <Filter>Pliki źródłowe\engine\fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -289,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="source\snakeImplementation\GameManager.h">
       <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\fonts\Fonts.h">
+      <Filter>Pliki nagłówkowe\engine\fonts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
 GameManager::GameManager(Engine* engine) : state ( GameState::GAME )
 {
 	game = new Game(engine, this);
-	gameMenu = new GameMenu();
+	gameMenu = new GameMenu(this, engine);
 }
 
 GameManager::~GameManager()
