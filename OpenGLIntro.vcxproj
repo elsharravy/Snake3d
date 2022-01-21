@@ -195,6 +195,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\Options\MenuOption.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\snakeImplementation\Snake.cpp">
       <SubType>
       </SubType>
@@ -249,6 +253,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="source\snakeImplementation\GameMenu.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\Options\MenuOption.h">
       <SubType>
       </SubType>
     </ClInclude>

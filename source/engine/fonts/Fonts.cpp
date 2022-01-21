@@ -122,3 +122,18 @@ void Font::RenderText(ShaderProgram& s, std::string text, float x, float y, floa
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+float Font::getTextAdvanceInPixels(const std::string& text)
+{
+    float totalAdvance = 0;
+    Character ch ;
+
+    for (auto i = text.begin(); i != text.end(); i++)
+    {
+        ch = Characters[*i];
+
+        totalAdvance += ch.Advance;
+    }
+
+    return (totalAdvance / 64);
+}

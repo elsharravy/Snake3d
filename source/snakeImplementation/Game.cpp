@@ -12,7 +12,7 @@
 "resources/textures/skybox/bottom.png", "resources/textures/skybox/front.png", "resources/textures/skybox/back.png"
 
 
-Game::Game(Engine* engine,GameManager* gameManager) : engine(engine), gameManager(gameManager),  snake(&board), pause(true), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
+Game::Game(Engine* engine,GameManager* gameManager) : engine(engine), gameManager(gameManager),  snake(&board), pause(false), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
 lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 {
@@ -145,7 +145,7 @@ void Game::update(float deltaTime)
 		{
 			gameOver();
 		}
-		else if (currentField == Field::FOOD)	// we eat food, we need another in random position in the world
+		else if (currentField == Field::FOOD)	// we eat food, we need another in random centerPosition in the world
 		{
 			generateRandomFood();
 		}
@@ -162,7 +162,9 @@ void Game::update(float deltaTime)
 
 void Game::gameOver()
 {
-	engine->requestEngineClose();
+//	engine->requestEngineClose();
+	resetGame();
+	gameManager->setstate(GameState::MENU);
 }
 
 void Game::renderSkyBox()
@@ -172,6 +174,11 @@ void Game::renderSkyBox()
 	skyBox.activate();
 	skyBoxCube.draw(cubemapShader);
 	glDepthMask(GL_TRUE);
+}
+
+void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+
 }
 
 void Game::mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset)
@@ -221,7 +228,8 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 	}
 	else if (key == GLFW_KEY_ESCAPE)
 	{
-		engine->requestEngineClose();
+//		engine->requestEngineClose();
+		gameManager->setstate(GameState::MENU);
 	}
 	else if (key == GLFW_KEY_KP_0 && action == GLFW_RELEASE)
 	{
@@ -295,6 +303,21 @@ void Game::setMovingKeys(float angle)
 		keyForMovingPlusZAxis = GLFW_KEY_W;
 	}
 
+}
+
+void Game::resetGame()
+{
+	board = Board();
+	snake = Snake(&board);
+	delete snakeFood;
+
+	initializeSnakeFood();
+	generateRandomFood();
+	initializeSnake();
+
+	cam = Camera();
+	setMovingKeys(cam.getAngle());
+	updateViewMatrixInShaders();
 }
 
 void Game::generateRandomFood()

@@ -40,6 +40,7 @@ xAxis(glm::vec3(-100.0f, 0.0f, 0.0f), glm::vec3(100.0f, 0.0f, 0.0f))
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 }
 Engine::~Engine()
 {
@@ -135,6 +136,10 @@ void Engine::render()
 	glfwSwapBuffers(window);
 }
 
+void Engine::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	callbacksHelperEngine->gameManager->mouse_button_callback(  window,  button,  action,  mods);
+}
 
 void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
@@ -146,7 +151,7 @@ void Engine::start()
 	LOG("initialization start");
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);

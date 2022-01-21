@@ -18,7 +18,7 @@ class SnakeHead
 	glm::ivec3 movementDirection;			// movement direction and movement direction requested are always meant to be normalized one axis vectors
 	glm::ivec3 movementDirectionRequested;
 
-	// when we are moving towards negative axis ex. from 3 to 2 on given axis, we need to add 1 on given axis to position vector, to make it the same case as with moving towards positive numbers
+	// when we are moving towards negative axis ex. from 3 to 2 on given axis, we need to add 1 on given axis to centerPosition vector, to make it the same case as with moving towards positive numbers
 	// when we are moving towards positive axis, compensationVector should be equal 0
 	glm::ivec3 compensationVector; 
 	glm::ivec3 compensationVectorRequested; 

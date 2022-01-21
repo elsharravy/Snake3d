@@ -3,7 +3,7 @@
 #include "GameMenu.h"
 #include "Game.h"
 
-GameManager::GameManager(Engine* engine) : state ( GameState::GAME )
+GameManager::GameManager(Engine* engine) : state ( GameState::MENU )
 {
 	game = new Game(engine, this);
 	gameMenu = new GameMenu(this, engine);
@@ -70,6 +70,21 @@ void GameManager::keyEvent(GLFWwindow* window, int key, int scancode, int action
 		break;
 	case GameState::GAME:
 		game->keyEvent(window, key, scancode, action, mods);
+		break;
+	default:
+		break;
+	}
+}
+
+void GameManager::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	switch (state)
+	{
+	case GameState::MENU:
+		gameMenu->mouse_button_callback(window, button, action, mods);
+		break;
+	case GameState::GAME:
+		game->mouse_button_callback(window, button, action, mods);
 		break;
 	default:
 		break;

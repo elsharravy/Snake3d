@@ -35,6 +35,7 @@ public:
 
 	void loadCharacters();
 	void RenderText(ShaderProgram& s, std::string text, float x, float y, float scale, glm::vec3 color);
+	float getTextAdvanceInPixels(const std::string& text);
 };
 
 #endif
