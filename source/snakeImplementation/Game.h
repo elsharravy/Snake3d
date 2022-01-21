@@ -8,6 +8,7 @@
 #include "../engine/shaders/shaderProgram.h"
 #include "../engine/cubemap/cubemap.h"
 #include "../engine/framebuffer/framebuffer.h"
+#include "../engine/fonts/Fonts.h"
 #include "Snake.h"
 #include "board.h"
 #include "../engine/macros.h"
@@ -35,6 +36,12 @@ class Game
 	ShaderProgram cubemapShader;
 	ShaderProgram postProcessShader;
 
+	ShaderProgram* textShader;
+
+	Font* font;
+
+	std::string scoreText;
+	
 	Board board;
 	Snake snake;
 	Camera cam;
@@ -63,6 +70,8 @@ class Game
 
 	glm::vec3 foodPos;
 
+	glm::mat4 projection;
+
 	void initializeSkyBox();
 	void initializeCubeBorders();
 	void initializeSnake();
@@ -71,6 +80,7 @@ class Game
 	void initializeSnakeFood();
 	void initializeShaders();
 	void initializePostProcessing();
+	void initializeInterface();
 
 	void resetGame();
 
@@ -79,6 +89,8 @@ class Game
 
 	void drawBorders(ShaderProgram& shader);
 	void updateViewMatrixInShaders();
+
+	void updateScoreText(int score);
 public:
 	Game(Engine* engine, GameManager* gameManager);
 	~Game();

@@ -3,7 +3,15 @@
 #include "../engine/Random/Random.h"
 #include "../engine/engine.h"
 
+#include "../engine/resources/ResourceManager.h"
+
 #include "GameManager.h"
+
+#include <string>
+
+#include <glm/matrix.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/vec3.hpp>
 
 #define SNAKE_INITIAL_VELOCITY 5
 #define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
@@ -16,9 +24,12 @@ Game::Game(Engine* engine,GameManager* gameManager) : engine(engine), gameManage
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
 lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 {
-	initializeCubeBorders();
+	font = ResourceManager::getFont( Fonts_Id::MAIN_FONT );
 
 	initializeShaders();
+
+	initializeCubeBorders();
+
 	initializeSkyBox();
 
 	initializePostProcessing();
@@ -29,6 +40,7 @@ lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 	generateRandomFood();
 	initializeKeySettings();
 	initializeSnake();
+	initializeInterface();
 
 	initializeSnakeSegment();
 	initializeSnakeFood();
@@ -62,6 +74,11 @@ void Game::initializeSnakeSegment()
 	snakeSegment->setColor(glm::vec3(0.02f, 0.29f, 0.003f));
 }
 
+void Game::initializeInterface()
+{
+	updateScoreText(snake.getsize());
+}
+
 void Game::initializeCubeBorders()
 {
 	border.setColor(glm::vec3(1.0, 1.0, 1.0));
@@ -92,6 +109,8 @@ void Game::initializeSnake()
 
 void Game::initializeShaders()
 {
+	textShader = ResourceManager::getShader(Shaders_Id::TEXT_SHADER);
+
 	engine->compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
 	engine->compileAndLinkShader(&lightSourceShader, "resources/shaders/lightSource.vs", "resources/shaders/lightSource.fs");
 	engine->compileAndLinkShader(&cubemapShader, "resources/shaders/cubeMap.vs", "resources/shaders/cubeMap.fs");
@@ -104,12 +123,14 @@ void Game::initializeShaders()
 
 	cubemapShader.use();
 	cubemapShader.setInt("cubemap", 0);
+
+	glm::vec2 screenSize = engine->getscreenSize();
+	projection = glm::perspective(glm::radians(45.0f), static_cast<float>(screenSize.x) / screenSize.y, 0.1f, 100.0f);
+	updateProjectionMatrixInShaders(projection);
 }
 
 void Game::render()
 {
-
-
 		// switch to off screen framebuffer
 		postProcessFramebuffer.activateFramebuffer();
 		glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -121,6 +142,10 @@ void Game::render()
 		snakeFood->draw(colorShader);
 		snake.draw(*snakeSegment, colorShader);
 		drawBorders(colorShader);
+
+
+		font->RenderText(*textShader, scoreText , 10, 10, 1.0f, glm::vec3(0.0,1.0, 0.0) );
+
 
 		// draw quad to make postprocessing
 		glDisable(GL_DEPTH_TEST);
@@ -148,6 +173,7 @@ void Game::update(float deltaTime)
 		else if (currentField == Field::FOOD)	// we eat food, we need another in random centerPosition in the world
 		{
 			generateRandomFood();
+			updateScoreText(snake.getsize());
 		}
 		else if (currentField == Field::WALL)	// we hit the wall
 		{
@@ -158,6 +184,11 @@ void Game::update(float deltaTime)
 	snakeFood->setPosition(foodPos);
 
 	updateViewMatrixInShaders();
+}
+
+void Game::updateScoreText(int score)
+{
+	scoreText = "Score: " + std::to_string(score);
 }
 
 void Game::gameOver()
@@ -314,6 +345,7 @@ void Game::resetGame()
 	initializeSnakeFood();
 	generateRandomFood();
 	initializeSnake();
+	updateScoreText(snake.getsize());
 
 	cam = Camera();
 	setMovingKeys(cam.getAngle());

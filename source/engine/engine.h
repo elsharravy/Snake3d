@@ -31,6 +31,8 @@ class Engine
 
 	GLFWwindow* window;
 
+	glm::vec2 screenSize;
+
 	double lastFrameCursorPosX;
 	double lastFrameCursorPosY;
 
@@ -60,5 +62,6 @@ public:
 	void compileAndLinkShader(ShaderProgram* shader, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 
 	GETTER(GLFWwindow*, window);
+	GETTER(glm::vec2, screenSize);
 };
 #endif

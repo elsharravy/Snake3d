@@ -20,8 +20,8 @@ class GameMenu
 {
 	GameManager* gameManager;
 	Engine* engine;
-	Font font;
-	ShaderProgram textShader;
+	Font* font;
+	ShaderProgram* textShader;
 
 	int optionFocused;
 

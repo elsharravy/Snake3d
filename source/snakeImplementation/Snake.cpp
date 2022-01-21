@@ -1,5 +1,6 @@
 #include "Snake.h"
 
+
 Snake::Snake(Board* board) : board(board), head(board), tail(board), snakeVelocity(2), size(2)
 {
 	tail.getQueue().push(glm::vec3(1, 0, 0));

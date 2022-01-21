@@ -4,6 +4,8 @@
 #include "snakeHead.h"
 #include "snakeTail.h"
 
+#include "../engine/macros.h"
+
 #include <glm/vec3.hpp>
 
 class Snake
@@ -24,6 +26,8 @@ public:
 	void requestDirectionChange(glm::ivec3 movementDirection, glm::ivec3 compensationVector);
 
 	void setSnakeVelocity(float velocity);
+
+	GETTER(int, size);
 };
 
 #endif

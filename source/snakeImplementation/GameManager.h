@@ -24,6 +24,7 @@ class GameManager
 
 	GameState state;
 
+
 public:
 	GameManager(Engine* engine);
 	~GameManager();

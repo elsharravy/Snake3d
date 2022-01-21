@@ -3,10 +3,15 @@
 #include "GameMenu.h"
 #include "Game.h"
 
+#include "../engine/resources/ResourceLoader.h"
+
 GameManager::GameManager(Engine* engine) : state ( GameState::MENU )
 {
+	ResourceLoader::loadResources();
+
 	game = new Game(engine, this);
 	gameMenu = new GameMenu(this, engine);
+
 }
 
 GameManager::~GameManager()

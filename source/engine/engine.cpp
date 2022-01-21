@@ -160,13 +160,16 @@ void Engine::start()
 	int windowY;
 	int windowX;
 	glfwGetWindowSize(window, &windowX, &windowY);
-	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), static_cast<float>(windowX) / windowY, 0.1f, 100.0f);
+
+	screenSize.x = windowX;
+	screenSize.y = windowY;
+//	glm::mat4 projection;
+//	projection = glm::perspective(glm::radians(45.0f), static_cast<float>(windowX) / windowY, 0.1f, 100.0f);
 
 	gameManager = new GameManager(this);
 	game = gameManager->getgame();
 
-	game->updateProjectionMatrixInShaders(projection);
+//	game->updateProjectionMatrixInShaders(projection);
 	
 	LOG("initializing end");
 

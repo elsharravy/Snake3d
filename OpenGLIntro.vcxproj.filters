@@ -222,6 +222,12 @@
     <ClCompile Include="source\snakeImplementation\Options\MenuOption.cpp">
       <Filter>Pliki źródłowe\snakeImplementation\Options</Filter>
     </ClCompile>
+    <ClCompile Include="source\engine\resources\ResourceManager.cpp">
+      <Filter>Pliki źródłowe\engine\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\resources\ResourceLoader.cpp">
+      <Filter>Pliki źródłowe\engine\resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -319,6 +325,12 @@
     </ClInclude>
     <ClInclude Include="source\snakeImplementation\Options\MenuOption.h">
       <Filter>Pliki nagłówkowe\snakeImplementation\Options</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\resources\ResourceManager.h">
+      <Filter>Pliki nagłówkowe\engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\resources\ResourceLoader.h">
+      <Filter>Pliki nagłówkowe\engine\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

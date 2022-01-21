@@ -177,6 +177,8 @@
     <ClCompile Include="source\engine\primitives\triangle.cpp" />
     <ClCompile Include="source\engine\primitives\Vec2.cpp" />
     <ClCompile Include="source\engine\Random\Random.cpp" />
+    <ClCompile Include="source\engine\resources\ResourceLoader.cpp" />
+    <ClCompile Include="source\engine\resources\ResourceManager.cpp" />
     <ClCompile Include="source\engine\shaders\shader.cpp" />
     <ClCompile Include="source\engine\shaders\shaderProgram.cpp" />
     <ClCompile Include="source\engine\texture\texture.cpp" />
@@ -238,6 +240,8 @@
     <ClInclude Include="source\engine\primitives\triangle.h" />
     <ClInclude Include="source\engine\primitives\Vec2.h" />
     <ClInclude Include="source\engine\Random\Random.h" />
+    <ClInclude Include="source\engine\resources\ResourceLoader.h" />
+    <ClInclude Include="source\engine\resources\ResourceManager.h" />
     <ClInclude Include="source\engine\shaders\shader.h" />
     <ClInclude Include="source\engine\shaders\shaderProgram.h" />
     <ClInclude Include="source\engine\texture\texture.h" />

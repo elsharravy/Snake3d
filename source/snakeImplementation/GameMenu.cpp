@@ -3,29 +3,34 @@
 #include "Game.h"
 #include "GameManager.h"
 
+#include "../engine/resources/ResourceManager.h"
+
 
 #include "../engine/engine.h"
 
-GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine), font("resources/fonts/arial.ttf", 48)
+GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine)
 {
-	engine->compileAndLinkShader(&textShader, "resources/shaders/text/textShader.vs", "resources/shaders/text/textShader.fs");
+//	engine->compileAndLinkShader(&textShader, "resources/shaders/text/textShader.vs", "resources/shaders/text/textShader.fs");
+	textShader = ResourceManager::getShader(Shaders_Id::TEXT_SHADER);
+
 	projection = glm::ortho(0.0f, 1900.0f, 0.0f, 1080.0f);
-	font.loadCharacters();
 	
+	font = ResourceManager::getFont(Fonts_Id::MAIN_FONT);
+
 	optionFocused = 0;
 
-	textShader.use();
-	textShader.setMatrix4("projection", projection);
+	textShader->use();
+	textShader->setMatrix4("projection", projection);
 
 	options.push_back(MenuOption( ));
 	options.push_back(MenuOption( ));
 	options.push_back(MenuOption( ));
 	options.push_back(MenuOption( ));
 
-	options.at(0).setLabel("Play", font);
-	options.at(1).setLabel("Options", font);
-	options.at(2).setLabel("HighScores", font);
-	options.at(3).setLabel("Exit", font);
+	options.at(0).setLabel("Play", *font);
+	options.at(1).setLabel("Options", *font);
+	options.at(2).setLabel("HighScores", *font);
+	options.at(3).setLabel("Exit", *font);
 
 	options.at(0).setcenterPosition( glm::vec2( 960 , 800 ) );
 	options.at(1).setcenterPosition(glm::vec2(960 , 600));
@@ -38,9 +43,12 @@ void GameMenu::render()
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+	textShader->use();
+	textShader->setMatrix4("projection", projection);
+
 	for (int i = 0; i < options.size(); i++)
 	{
-		options.at(i).draw(font, textShader);
+		options.at(i).draw(*font, *textShader);
 	}
 
 }
