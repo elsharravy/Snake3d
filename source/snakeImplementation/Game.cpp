@@ -6,6 +6,7 @@
 #include "../engine/resources/ResourceManager.h"
 
 #include "GameManager.h"
+#include "GameMenu.h"
 
 #include <string>
 
@@ -194,6 +195,8 @@ void Game::updateScoreText(int score)
 void Game::gameOver()
 {
 //	engine->requestEngineClose();
+	gameManager->getgameMenu()->gethighscores().insertNewScore( snake.getsize() );
+	gameManager->getgameMenu()->gethighscores().saveToFile();
 	resetGame();
 	gameManager->setstate(GameState::MENU);
 }

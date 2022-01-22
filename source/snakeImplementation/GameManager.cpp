@@ -18,7 +18,6 @@ GameManager::~GameManager()
 {
 	delete game;
 	delete gameMenu;
-
 }
 
 

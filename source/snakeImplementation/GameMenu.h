@@ -10,11 +10,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/matrix.hpp>
 
+#include "HighScores.h"
+
+#include "../engine/macros.h"
+
 #include <vector>
 
 class GameManager;
 class Engine;
 enum POST_PROCESSING_EFFECT;
+enum GameState;
+
 
 class GameMenu
 {
@@ -23,11 +29,19 @@ class GameMenu
 	Font* font;
 	ShaderProgram* textShader;
 
+	HighScores highscores;
+
+	GameState menuOptionSelected;
+
 	int optionFocused;
 
 	std::vector< MenuOption > options;
 
 	glm::mat4 projection;
+
+	void initializeHighscores();
+
+	void highscoresKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mods);
 public:
 	GameMenu(GameManager* gameManager, Engine* engine);
 	
@@ -40,6 +54,8 @@ public:
 	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 	void setPostProcessEffect(POST_PROCESSING_EFFECT effect);
+
+	GETTER_REF( HighScores, highscores)
 };
 
 #endif

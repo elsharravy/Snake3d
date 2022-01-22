@@ -8,14 +8,19 @@
 
 #include "../engine/engine.h"
 
-GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine)
+#define HIGHSCORES_PATH "resources/data/best.hs"
+
+GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine), highscores(HIGHSCORES_PATH)
 {
+	menuOptionSelected = GameState::MENU;
 //	engine->compileAndLinkShader(&textShader, "resources/shaders/text/textShader.vs", "resources/shaders/text/textShader.fs");
 	textShader = ResourceManager::getShader(Shaders_Id::TEXT_SHADER);
 
 	projection = glm::ortho(0.0f, 1900.0f, 0.0f, 1080.0f);
 	
 	font = ResourceManager::getFont(Fonts_Id::MAIN_FONT);
+
+	initializeHighscores();
 
 	optionFocused = 0;
 
@@ -43,18 +48,48 @@ void GameMenu::render()
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+
 	textShader->use();
 	textShader->setMatrix4("projection", projection);
 
-	for (int i = 0; i < options.size(); i++)
+	switch (menuOptionSelected)
 	{
-		options.at(i).draw(*font, *textShader);
+	case MENU:
+	{
+		for (int i = 0; i < options.size(); i++)
+		{
+			options.at(i).draw(*font, *textShader);
+		}
+		break;
 	}
+	case OPTIONS:
+		break;
+	case HIGHSCORES:
+	{
+		for (size_t i = 0; i < 10; i++)
+		{
+			font->RenderText(*textShader, highscores.getHighscoresText(i), 900, 900 - i * 80, 1.0f, glm::vec3(0.0, 0.0, 0.0));
+		}
+		break;
+	}
+	case GAME:
+		break;
+	default:
+		break;
+	}
+
+
+
 
 }
 void GameMenu::update(float deltaTime)
 {
 	options.at(optionFocused).updateScale(deltaTime);
+}
+
+void GameMenu::initializeHighscores()
+{
+	highscores.loadFromFile();
 }
 
 void GameMenu::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -68,63 +103,77 @@ void GameMenu::mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, dou
 }
 void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_M && action == GLFW_RELEASE)
+
+	if (menuOptionSelected == GameState::MENU)
 	{
-	gameManager->setstate(GameState::GAME);
+
+
+		if (key == GLFW_KEY_ENTER && action == GLFW_RELEASE)
+		{
+			switch (optionFocused)
+			{
+			case 0:
+			{
+				gameManager->setstate(GameState::GAME);
+				break;
+			}
+			case 1:
+			{
+				//			gameManager->setstate(GameState::OPTIONS);
+				break;
+			}
+			case 2:
+			{
+				menuOptionSelected = GameState::HIGHSCORES;
+				break;
+			}
+			case 3:
+			{
+				engine->requestEngineClose();
+				break;
+			}
+			default:
+				break;
+			}
+			//	gameManager->setstate(GameState::GAME);
+		}
+		else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
+		{
+			options.at(optionFocused).resetScale();
+
+			optionFocused += 1;
+
+			if (optionFocused >= options.size())
+			{
+				optionFocused = 0;
+			}
+		}
+		else if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
+		{
+			options.at(optionFocused).resetScale();
+
+			optionFocused -= 1;
+
+			if (optionFocused < 0)
+			{
+				optionFocused = (options.size() - 1);
+			}
+		}
 	}
-	else if (key == GLFW_KEY_ENTER && action == GLFW_RELEASE)
+	else
 	{
-
-		switch (optionFocused)
-		{	
-		case 0:
-		{
-			gameManager->setstate(GameState::GAME);
-			break;
-		}
-		case 1:
-		{
-//			gameManager->setstate(GameState::OPTIONS);
-			break;
-		}
-		case 2:
-		{
-			
-			break;
-		}
-		case 3:
-		{
-			engine->requestEngineClose();
-			break;
-		}
-		default:
-			break;
-		}
-	//	gameManager->setstate(GameState::GAME);
-	}
-	else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
-	{
-		options.at(optionFocused).resetScale();
-
-		optionFocused += 1;
-
-		if (optionFocused >= options.size())
-		{
-			optionFocused = 0;
-		}
-	}
-	else if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
-	{
-		options.at(optionFocused).resetScale();
-
-		optionFocused -= 1;
-
-		if (optionFocused < 0)
-		{
-			optionFocused = (options.size() - 1);
-		}
+		highscoresKeyEvents(window, key, scancode, action, mods);
 	}
 }
+
+void GameMenu::highscoresKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_ENTER && action == GLFW_RELEASE)
+	{
+		menuOptionSelected = GameState::MENU;
+	}
+}
+
 void GameMenu::scrollEvent(GLFWwindow* window, double xoffset, double yoffset)
 {
 

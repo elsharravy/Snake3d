@@ -14,6 +14,7 @@ enum GameState
 {
 	MENU,
 	OPTIONS,
+	HIGHSCORES,
 	GAME,
 };
 
@@ -40,6 +41,7 @@ public:
 	void setPostProcessEffect(POST_PROCESSING_EFFECT effect);
 	
 	GETTER(Game*, game);
+	GETTER(GameMenu*, gameMenu);
 	GETTER(GameState, state);
 	SETTER(GameState, state);
 };

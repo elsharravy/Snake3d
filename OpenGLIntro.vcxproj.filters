@@ -228,6 +228,9 @@
     <ClCompile Include="source\engine\resources\ResourceLoader.cpp">
       <Filter>Pliki źródłowe\engine\resources</Filter>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\HighScores.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="source\engine\resources\ResourceLoader.h">
       <Filter>Pliki nagłówkowe\engine\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\HighScores.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
