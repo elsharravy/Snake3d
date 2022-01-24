@@ -121,6 +121,18 @@
     <Filter Include="Pliki nagłówkowe\snakeImplementation\Options">
       <UniqueIdentifier>{86afeb3d-7066-4730-b203-abc5502d3fa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\files">
+      <UniqueIdentifier>{006d19f3-66bc-40ff-8975-0eb7af66f2ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\files">
+      <UniqueIdentifier>{a8477a46-7118-4b9b-871e-9e7590c66836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\string">
+      <UniqueIdentifier>{31fe7983-cdf2-4b62-8bce-e0d847edc36e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\string">
+      <UniqueIdentifier>{cc929e2b-1dbb-47b6-86a4-5bab57d7b919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -231,6 +243,24 @@
     <ClCompile Include="source\snakeImplementation\HighScores.cpp">
       <Filter>Pliki źródłowe\snakeImplementation</Filter>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\HighscoreScreen.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snakeImplementation\Options\OptionsScreen.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation\Options</Filter>
+    </ClCompile>
+    <ClCompile Include="source\snakeImplementation\OptionsScreenImpl.cpp">
+      <Filter>Pliki źródłowe\snakeImplementation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\files\File.cpp">
+      <Filter>Pliki źródłowe\engine\files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\files\InitializationFile.cpp">
+      <Filter>Pliki źródłowe\engine\files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\engine\string\StringOperations.cpp">
+      <Filter>Pliki źródłowe\engine\string</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -337,6 +367,24 @@
     </ClInclude>
     <ClInclude Include="source\snakeImplementation\HighScores.h">
       <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\HighscoreScreen.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\Options\OptionsScreen.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation\Options</Filter>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\OptionsScreenImpl.h">
+      <Filter>Pliki nagłówkowe\snakeImplementation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\files\File.h">
+      <Filter>Pliki nagłówkowe\engine\files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\files\InitializationFile.h">
+      <Filter>Pliki nagłówkowe\engine\files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\string\StringOperations.h">
+      <Filter>Pliki nagłówkowe\engine\string</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

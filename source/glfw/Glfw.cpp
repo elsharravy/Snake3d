@@ -5,9 +5,9 @@ Glfw::Glfw()
 
 }
 
-GLFWwindow* Glfw::createWindow(int width, int height,const std::string& title)
+GLFWwindow* Glfw::createWindow(int width, int height,const std::string& title, GLFWmonitor* monitor)
 {
-    GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), monitor, NULL);
     glfwMakeContextCurrent(window);
     return window;
 }

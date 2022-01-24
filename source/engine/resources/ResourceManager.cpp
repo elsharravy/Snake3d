@@ -79,7 +79,7 @@ void ResourceManager::loadTexture(const std::string& filePath, Textures_Id id)
 
 */
 
-void ResourceManager::loadFont(const std::string& filePath,int size,  Fonts_Id id)
+void ResourceManager::loadFont(const std::string& filePath,int size,  Fonts id)
 {
 	Font* font = new Font(filePath, size);
 	font->loadCharacters();
@@ -87,7 +87,7 @@ void ResourceManager::loadFont(const std::string& filePath,int size,  Fonts_Id i
 	rm.addFont(font, id);
 }
 
- void ResourceManager::loadShader(const std::string& vShaderPath, const std::string& fShaderPath, Shaders_Id id)
+ void ResourceManager::loadShader(const std::string& vShaderPath, const std::string& fShaderPath, Shaders id)
 {
 	 ShaderProgram* shader = new ShaderProgram();
 
@@ -152,12 +152,12 @@ sf::SoundBuffer* ResourceManager::getSoundBuffer(Sounds_Id id)
 
 */
 
-Font* ResourceManager::getFont(Fonts_Id id)
+Font* ResourceManager::getFont(Fonts id)
 {
 	return rm.fonts.at(id);
 }
 
- ShaderProgram* ResourceManager::getShader(Shaders_Id id)
+ ShaderProgram* ResourceManager::getShader(Shaders id)
 {
 	return rm.shaders.at(id);
 }
@@ -172,12 +172,12 @@ void ResourceMachine::addTexture(sf::Texture* texture, Textures_Id id)
 	textures.insert({id, texture});
 }
 */
-void ResourceMachine::addFont(Font* font, Fonts_Id id)
+void ResourceMachine::addFont(Font* font, Fonts id)
 {
 	fonts.insert({ id, font });
 }
 
-void ResourceMachine::addShader(ShaderProgram* shader, Shaders_Id id)
+void ResourceMachine::addShader(ShaderProgram* shader, Shaders id)
 {
 	shaders.insert({ id, shader});
 }

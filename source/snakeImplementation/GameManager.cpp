@@ -5,9 +5,13 @@
 
 #include "../engine/resources/ResourceLoader.h"
 
-GameManager::GameManager(Engine* engine) : state ( GameState::MENU )
+#define OPTIONS_FILE_PATH "resources/data/options.ini"
+
+GameManager::GameManager(Engine* engine) : state ( GameState::MENU ), optionsFile(OPTIONS_FILE_PATH)
 {
 	ResourceLoader::loadResources();
+
+	optionsFile.populateValues();
 
 	game = new Game(engine, this);
 	gameMenu = new GameMenu(this, engine);

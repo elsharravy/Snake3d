@@ -5,6 +5,8 @@
 
 #include "../engine/macros.h"
 
+#include "../engine/files/InitializationFile.h"
+
 class Engine;
 class Game;
 class GameMenu;
@@ -25,6 +27,8 @@ class GameManager
 
 	GameState state;
 
+	InitializationFile optionsFile;
+
 
 public:
 	GameManager(Engine* engine);
@@ -43,6 +47,7 @@ public:
 	GETTER(Game*, game);
 	GETTER(GameMenu*, gameMenu);
 	GETTER(GameState, state);
+	GETTER_REF(InitializationFile, optionsFile);
 	SETTER(GameState, state);
 };
 

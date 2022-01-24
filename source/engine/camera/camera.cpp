@@ -4,7 +4,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Camera::Camera(glm::vec3 pos) : view( glm::mat4(1.0f)), radiusSensitivity(0.5f), angleSensitivity(0.10f), angleYSensitivity(0.05f), radius( 20.0f ), angle( 90.0f ), angleY(45.0f)
+Camera::Camera(glm::vec3 pos) : view( glm::mat4(1.0f)), radiusSensitivity(0.5f), angleSensitivity(0.10f), angleYSensitivity(0.10f), radius( 20.0f ), angle( 90.0f ), angleY(45.0f)
 {
 	center = glm::vec3(5, 5, 5);
 	up = glm::vec3(0.0f, 1.0f, 0.0f);

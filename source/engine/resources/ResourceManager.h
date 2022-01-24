@@ -11,7 +11,7 @@ enum Textures_Id
 
 };
 
-enum Fonts_Id
+enum Fonts
 {
 	MAIN_FONT,
 };
@@ -26,7 +26,7 @@ enum Musics_Id
 
 };
 
-enum Shaders_Id
+enum Shaders
 {
 	TEXT_SHADER,
 };
@@ -42,8 +42,8 @@ public:
 
 class ResourceMachine
 {
-	std::unordered_map<Fonts_Id, Font*> fonts;
-	std::unordered_map<Shaders_Id, ShaderProgram*> shaders;
+	std::unordered_map<Fonts, Font*> fonts;
+	std::unordered_map<Shaders, ShaderProgram*> shaders;
 
 	~ResourceMachine();
 	ResourceMachine();
@@ -55,8 +55,8 @@ class ResourceMachine
 //	void deleteSolids();
 
 //	void addTexture(sf::Texture* texture, Textures_Id id);
-	void addFont(Font* font, Fonts_Id id);
-	void addShader(ShaderProgram* shader, Shaders_Id id);
+	void addFont(Font* font, Fonts id);
+	void addShader(ShaderProgram* shader, Shaders id);
 //	void addSoundBuffer(sf::SoundBuffer* buffer, Sounds_Id id);
 
 public:
@@ -76,14 +76,14 @@ public:
 
 //	static void loadSoundBuffer(const std::string& filePath, Sounds_Id id);
 //	static void loadTexture(const std::string& filePath, Textures_Id id);
-	static void loadFont(const std::string& filePath, int size, Fonts_Id id);
-	static void loadShader(const std::string& vShaderPath, const std::string& fShaderPath, Shaders_Id id);
+	static void loadFont(const std::string& filePath, int size, Fonts id);
+	static void loadShader(const std::string& vShaderPath, const std::string& fShaderPath, Shaders id);
 
 //	static void addSolid(Solid* solid, const std::string& label);
 
 //	static sf::Texture* getTexture(Textures_Id id);
 //	static sf::SoundBuffer* getSoundBuffer(Sounds_Id id);
-	static Font* getFont(Fonts_Id id);
-	static ShaderProgram* getShader(Shaders_Id id);
+	static Font* getFont(Fonts id);
+	static ShaderProgram* getShader(Shaders id);
 //	static Solid* getSolid(const std::string& label);
 };

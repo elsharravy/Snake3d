@@ -10,15 +10,15 @@
 
 #define HIGHSCORES_PATH "resources/data/best.hs"
 
-GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine), highscores(HIGHSCORES_PATH)
+GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine), highscores(HIGHSCORES_PATH), highscoresScreen(this), optionsScreen(this)
 {
 	menuOptionSelected = GameState::MENU;
 //	engine->compileAndLinkShader(&textShader, "resources/shaders/text/textShader.vs", "resources/shaders/text/textShader.fs");
-	textShader = ResourceManager::getShader(Shaders_Id::TEXT_SHADER);
+	textShader = ResourceManager::getShader(Shaders::TEXT_SHADER);
 
 	projection = glm::ortho(0.0f, 1900.0f, 0.0f, 1080.0f);
 	
-	font = ResourceManager::getFont(Fonts_Id::MAIN_FONT);
+	font = ResourceManager::getFont(Fonts::MAIN_FONT);
 
 	initializeHighscores();
 
@@ -63,13 +63,11 @@ void GameMenu::render()
 		break;
 	}
 	case OPTIONS:
+		optionsScreen.render();
 		break;
 	case HIGHSCORES:
 	{
-		for (size_t i = 0; i < 10; i++)
-		{
-			font->RenderText(*textShader, highscores.getHighscoresText(i), 900, 900 - i * 80, 1.0f, glm::vec3(0.0, 0.0, 0.0));
-		}
+		highscoresScreen.render();
 		break;
 	}
 	case GAME:
@@ -78,13 +76,25 @@ void GameMenu::render()
 		break;
 	}
 
-
-
-
 }
 void GameMenu::update(float deltaTime)
 {
-	options.at(optionFocused).updateScale(deltaTime);
+	switch (menuOptionSelected)
+	{
+	case MENU:
+		options.at(optionFocused).updateScale(deltaTime);
+		break;
+	case OPTIONS:
+		optionsScreen.update(deltaTime);
+		break;
+	case HIGHSCORES:
+		break;
+	case GAME:
+		break;
+	default:
+		break;
+	}
+
 }
 
 void GameMenu::initializeHighscores()
@@ -119,7 +129,7 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 			}
 			case 1:
 			{
-				//			gameManager->setstate(GameState::OPTIONS);
+				menuOptionSelected = GameState::OPTIONS;
 				break;
 			}
 			case 2:
@@ -160,19 +170,16 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 			}
 		}
 	}
-	else
+	else if(menuOptionSelected == GameState::HIGHSCORES)
 	{
-		highscoresKeyEvents(window, key, scancode, action, mods);
+		highscoresScreen.keyEvent(window, key, scancode, action, mods);
+	}
+	else if (menuOptionSelected == GameState::OPTIONS)
+	{
+		optionsScreen.keyEvent(window, key, scancode, action, mods);
 	}
 }
 
-void GameMenu::highscoresKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_ENTER && action == GLFW_RELEASE)
-	{
-		menuOptionSelected = GameState::MENU;
-	}
-}
 
 void GameMenu::scrollEvent(GLFWwindow* window, double xoffset, double yoffset)
 {

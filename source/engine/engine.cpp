@@ -78,9 +78,9 @@ void Engine::compileAndLinkShader(ShaderProgram* shader, const std::string& vert
 	shader->link(&vShader, &fShader);
 }
 
-GLFWwindow* Engine::createWindow(int width, int height, const std::string& title)
+GLFWwindow* Engine::createWindow(int width, int height, const std::string& title, GLFWmonitor* monitor)
 {
-	GLFWwindow* window = Glfw::createWindow(width, height, title);
+	GLFWwindow* window = Glfw::createWindow(width, height, title, monitor);
 	return window;
 }
 

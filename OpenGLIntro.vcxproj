@@ -161,6 +161,8 @@
     </ClCompile>
     <ClCompile Include="source\engine\cubemap\Cubemap.cpp" />
     <ClCompile Include="source\engine\engine.cpp" />
+    <ClCompile Include="source\engine\files\File.cpp" />
+    <ClCompile Include="source\engine\files\InitializationFile.cpp" />
     <ClCompile Include="source\engine\fonts\Fonts.cpp">
       <SubType>
       </SubType>
@@ -181,6 +183,7 @@
     <ClCompile Include="source\engine\resources\ResourceManager.cpp" />
     <ClCompile Include="source\engine\shaders\shader.cpp" />
     <ClCompile Include="source\engine\shaders\shaderProgram.cpp" />
+    <ClCompile Include="source\engine\string\StringOperations.cpp" />
     <ClCompile Include="source\engine\texture\texture.cpp" />
     <ClCompile Include="source\glad\Glad.cpp" />
     <ClCompile Include="source\glfw\Glfw.cpp" />
@@ -201,7 +204,19 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="source\snakeImplementation\HighscoreScreen.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\snakeImplementation\OptionsScreenImpl.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="source\snakeImplementation\Options\MenuOption.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="source\snakeImplementation\Options\OptionsScreen.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -227,6 +242,8 @@
     </ClInclude>
     <ClInclude Include="source\engine\cubemap\Cubemap.h" />
     <ClInclude Include="source\engine\engine.h" />
+    <ClInclude Include="source\engine\files\File.h" />
+    <ClInclude Include="source\engine\files\InitializationFile.h" />
     <ClInclude Include="source\engine\fonts\Fonts.h">
       <SubType>
       </SubType>
@@ -248,6 +265,7 @@
     <ClInclude Include="source\engine\resources\ResourceManager.h" />
     <ClInclude Include="source\engine\shaders\shader.h" />
     <ClInclude Include="source\engine\shaders\shaderProgram.h" />
+    <ClInclude Include="source\engine\string\StringOperations.h" />
     <ClInclude Include="source\engine\texture\texture.h" />
     <ClInclude Include="source\glad\Glad.h" />
     <ClInclude Include="source\glfw\Glfw.h" />
@@ -268,7 +286,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="source\snakeImplementation\HighscoreScreen.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\OptionsScreenImpl.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="source\snakeImplementation\Options\MenuOption.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="source\snakeImplementation\Options\OptionsScreen.h">
       <SubType>
       </SubType>
     </ClInclude>

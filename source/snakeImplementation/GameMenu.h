@@ -6,6 +6,8 @@
 #include "../engine/shaders/shaderProgram.h"
 #include "../engine/fonts/Fonts.h"
 #include "Options/MenuOption.h"
+#include "HighscoreScreen.h"
+#include "OptionsScreenImpl.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/matrix.hpp>
@@ -31,6 +33,9 @@ class GameMenu
 
 	HighScores highscores;
 
+	HighscoreScreen highscoresScreen;
+	OptionsScreenImpl optionsScreen;
+
 	GameState menuOptionSelected;
 
 	int optionFocused;
@@ -41,7 +46,6 @@ class GameMenu
 
 	void initializeHighscores();
 
-	void highscoresKeyEvents(GLFWwindow* window, int key, int scancode, int action, int mods);
 public:
 	GameMenu(GameManager* gameManager, Engine* engine);
 	
@@ -55,7 +59,9 @@ public:
 
 	void setPostProcessEffect(POST_PROCESSING_EFFECT effect);
 
-	GETTER_REF( HighScores, highscores)
+	GETTER_REF(HighScores, highscores);
+	GETTER(GameManager*, gameManager);
+	SETTER(GameState, menuOptionSelected);
 };
 
 #endif

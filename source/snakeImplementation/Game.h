@@ -73,6 +73,7 @@ class Game
 	glm::mat4 projection;
 
 	void initializeSkyBox();
+	void initializeCamera();
 	void initializeCubeBorders();
 	void initializeSnake();
 	void initializeKeySettings();

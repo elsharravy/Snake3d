@@ -13,7 +13,7 @@ private:
 
 public:
 
-	static GLFWwindow* createWindow(int width, int height,const std::string& title);
+	static GLFWwindow* createWindow(int width, int height,const std::string& title, GLFWmonitor* monitor = NULL);
 	static int initGlfw(int majorOpenGLVersion, int minorOpenGLVersion, int openGLProfile);
 	static void terminate();
 };

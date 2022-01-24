@@ -54,7 +54,7 @@ public:
 	Engine(GLFWwindow* window);
 	~Engine();
 
-	static GLFWwindow* createWindow(int width, int height, const std::string& title);
+	static GLFWwindow* createWindow(int width, int height, const std::string& title, GLFWmonitor* monitor = NULL);
 
 	void start();
 

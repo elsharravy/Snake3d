@@ -10,6 +10,8 @@
 
 #include "../shaders/shaderProgram.h"
 
+#include "../macros.h"
+
 class Camera
 {
 	float radius;
@@ -45,6 +47,9 @@ public:
 	void addRadius(float radius);
 	float getAngle();
 	float getAngleY();
+
+	SETTER(float, angleSensitivity);
+	SETTER(float, angleYSensitivity);
 };
 
 #endif

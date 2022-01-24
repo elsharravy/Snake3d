@@ -14,7 +14,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 
-#define SNAKE_INITIAL_VELOCITY 5
+#define SNAKE_INITIAL_VELOCITY 6
 #define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
 
 #define SKY_BOX_PATHS "resources/textures/skybox/right.png", "resources/textures/skybox/left.png","resources/textures/skybox/top.png", \
@@ -25,15 +25,13 @@ Game::Game(Engine* engine,GameManager* gameManager) : engine(engine), gameManage
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
 lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
 {
-	font = ResourceManager::getFont( Fonts_Id::MAIN_FONT );
+	font = ResourceManager::getFont( Fonts::MAIN_FONT );
 
 	initializeShaders();
-
 	initializeCubeBorders();
-
 	initializeSkyBox();
-
 	initializePostProcessing();
+	initializeCamera();
 		
 	lightSource.setPosition(LIGHT_INITIAL_POS);
 	lightSource.setColor(glm::vec3(1.0f, 1.0f, 0.0f));
@@ -87,6 +85,14 @@ void Game::initializeCubeBorders()
 	border3.setColor(glm::vec3(1.0, 1.0, 1.0));
 }
 
+void Game::initializeCamera()
+{
+	float cameraSensitivity = gameManager->getoptionsFile().getFloat("settings", "mouseSensitivity");
+
+	cam.setangleSensitivity(cameraSensitivity);
+	cam.setangleYSensitivity(cameraSensitivity);
+}
+
 void Game::initializePostProcessing()
 {
 	postProcessFramebuffer.generate(1920, 1080);
@@ -99,18 +105,19 @@ void Game::initializeSkyBox()
 	std::vector<std::string> paths = { SKY_BOX_PATHS };
 
 	skyBox.load(paths);
-
+	
 	skyBoxCube.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void Game::initializeSnake()
 {
-	snake.setSnakeVelocity(SNAKE_INITIAL_VELOCITY);
+	snake.setSnakeVelocity( atoi( gameManager->getoptionsFile().getValue("settings" , "difficulty").c_str() ) );
+//	snake.setSnakeVelocity( SNAKE_INITIAL_VELOCITY );
 }
 
 void Game::initializeShaders()
 {
-	textShader = ResourceManager::getShader(Shaders_Id::TEXT_SHADER);
+	textShader = ResourceManager::getShader(Shaders::TEXT_SHADER);
 
 	engine->compileAndLinkShader(&colorShader, "resources/shaders/colorShader.vs", "resources/shaders/colorShader.fs");
 	engine->compileAndLinkShader(&lightSourceShader, "resources/shaders/lightSource.vs", "resources/shaders/lightSource.fs");
