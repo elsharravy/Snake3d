@@ -41,17 +41,24 @@ void HighScores::saveToFile()
 int HighScores::insertNewScore(int score)
 {
 	// if score is big enough to be on highscore
-	if (score > highscores.at(9))
+	for (int i = 0; i < 10; i++)
 	{
-		struct {
-			bool operator()(const int& a,const int& b) const { return a > b; }
-		} static customLess;
+		if (score > highscores.at(i))
+		{
+			struct {
+				bool operator()(const int& a, const int& b) const { return a > b; }
+			} static customLess;
 
-		// overwrite worst score, and sort highscores
-		highscores.at(9) = score;
-		std::stable_sort(highscores.begin(), highscores.end(), customLess);
-		updateHighscoresTexts();
+			// overwrite worst score, and sort highscores
+			highscores.at(9) = score;
+			std::stable_sort(highscores.begin(), highscores.end(), customLess);
+			updateHighscoresTexts();
+
+			return i;
+		}
 	}
+
+	return -1;
 }
 
 void HighScores::updateHighscoresTexts()

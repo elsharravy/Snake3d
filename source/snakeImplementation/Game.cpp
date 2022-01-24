@@ -202,10 +202,16 @@ void Game::updateScoreText(int score)
 void Game::gameOver()
 {
 //	engine->requestEngineClose();
-	gameManager->getgameMenu()->gethighscores().insertNewScore( snake.getsize() );
-	gameManager->getgameMenu()->gethighscores().saveToFile();
+	int pos = gameManager->getgameMenu()->gethighscores().insertNewScore( snake.getsize() );
+
 	resetGame();
 	gameManager->setstate(GameState::MENU);
+
+	if (pos > -1)
+	{
+		gameManager->getgameMenu()->gethighscores().saveToFile();
+		gameManager->getgameMenu()->setmenuOptionSelected(GameState::HIGHSCORES);
+	}
 }
 
 void Game::renderSkyBox()

@@ -14,6 +14,7 @@ class MenuOption
 	float width;
 	
 	glm::vec2 centerPosition;
+	glm::vec3 color;
 
 	float scale;
 	int scaleDir;	
@@ -30,6 +31,7 @@ public:
 	void setLabel(const std::string& label, Font& font);
 
 	SETTER(const glm::vec2&, centerPosition);
+	SETTER(const glm::vec3&, color);
 
 	GETTER(std::string, label);
 	GETTER(float, width);

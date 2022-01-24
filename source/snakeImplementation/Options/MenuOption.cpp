@@ -3,6 +3,7 @@
 
 MenuOption::MenuOption( glm::vec2 position) : centerPosition(position)
 {
+	color = glm::vec3(0.0, 0.0, 0.0);
 	width = 0;
 
 	scale = 1.0f;
@@ -19,7 +20,7 @@ void MenuOption::draw(Font& font, ShaderProgram& textShader)
 {
 	float scaledWidth = (width * scale);
 	
-	font.RenderText(textShader, label , centerPosition.x - (scaledWidth/2), centerPosition.y , scale, glm::vec3(0.0, 0.0, 0.0));
+	font.RenderText(textShader, label , centerPosition.x - (scaledWidth/2), centerPosition.y , scale, color);
 }
 
 void MenuOption::updateScale(float dt)

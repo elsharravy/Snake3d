@@ -10,6 +10,9 @@
 
 #define HIGHSCORES_PATH "resources/data/best.hs"
 
+#define SELECTED_OPTION_COLOR glm::vec3(0.47f, 0.0f, 0.0f)
+#define UNSELECTED_OPTION_COLOR glm::vec3(0.0f, 0.0f, 0.0f)
+
 GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameManager), engine(engine), highscores(HIGHSCORES_PATH), highscoresScreen(this), optionsScreen(this)
 {
 	menuOptionSelected = GameState::MENU;
@@ -41,6 +44,8 @@ GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameMa
 	options.at(1).setcenterPosition(glm::vec2(960 , 600));
 	options.at(2).setcenterPosition(glm::vec2(960 , 400));
 	options.at(3).setcenterPosition(glm::vec2(960, 200));
+
+	options.at(0).setcolor(SELECTED_OPTION_COLOR);
 }
 
 void GameMenu::render()
@@ -150,6 +155,7 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 		else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
 		{
 			options.at(optionFocused).resetScale();
+			options.at(optionFocused).setcolor( UNSELECTED_OPTION_COLOR );
 
 			optionFocused += 1;
 
@@ -157,10 +163,12 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 			{
 				optionFocused = 0;
 			}
+			options.at(optionFocused).setcolor(SELECTED_OPTION_COLOR);
 		}
 		else if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
 		{
 			options.at(optionFocused).resetScale();
+			options.at(optionFocused).setcolor(UNSELECTED_OPTION_COLOR);
 
 			optionFocused -= 1;
 
@@ -168,6 +176,7 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 			{
 				optionFocused = (options.size() - 1);
 			}
+			options.at(optionFocused).setcolor(SELECTED_OPTION_COLOR);
 		}
 	}
 	else if(menuOptionSelected == GameState::HIGHSCORES)
