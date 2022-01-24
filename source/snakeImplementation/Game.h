@@ -8,6 +8,7 @@
 #include "../engine/shaders/shaderProgram.h"
 #include "../engine/cubemap/cubemap.h"
 #include "../engine/framebuffer/framebuffer.h"
+#include "../engine/particles/ParticlesGenerator.h"
 #include "../engine/fonts/Fonts.h"
 #include "Snake.h"
 #include "board.h"
@@ -35,8 +36,11 @@ class Game
 	ShaderProgram lightSourceShader;
 	ShaderProgram cubemapShader;
 	ShaderProgram postProcessShader;
+	ShaderProgram particlesShader;
 
 	ShaderProgram* textShader;
+
+	ParticlesGenerator explosion;
 
 	Font* font;
 
@@ -56,7 +60,7 @@ class Game
 	POST_PROCESSING_EFFECT activePostProcessEffect;
 
 	bool pause;
-
+	bool died;
 
 	Line border, border2, border3;
 	Cube* snakeSegment,* snakeFood;
@@ -83,8 +87,6 @@ class Game
 	void initializePostProcessing();
 	void initializeInterface();
 
-	void resetGame();
-
 	void setMovingKeys(float angle);
 	void generateRandomFood();
 
@@ -100,6 +102,7 @@ public:
 	void update( float deltaTime );
 
 	void gameOver();
+	void resetGame();
 
 	void renderSkyBox();
 
@@ -114,6 +117,7 @@ public:
 	void updateProjectionMatrixInShaders(glm::mat4 projection);
 
 	GETTER_REF(ShaderProgram, lightSourceShader);
+	GETTER(bool, died);
 };
 
 #endif

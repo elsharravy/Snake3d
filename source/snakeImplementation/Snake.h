@@ -28,6 +28,7 @@ public:
 	void setSnakeVelocity(float velocity);
 
 	GETTER(int, size);
+	GETTER_REF(SnakeHead, head);
 };
 
 #endif

@@ -129,6 +129,10 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 			{
 			case 0:
 			{
+				if (gameManager->getgame()->getdied())
+				{
+					gameManager->getgame()->resetGame();
+				}
 				gameManager->setstate(GameState::GAME);
 				break;
 			}

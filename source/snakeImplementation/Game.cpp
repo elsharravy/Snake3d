@@ -14,8 +14,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 
-#define SNAKE_INITIAL_VELOCITY 6
 #define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
+
+#define EXPLOSION_PARTICLE_INSTANCES 350
 
 #define SKY_BOX_PATHS "resources/textures/skybox/right.png", "resources/textures/skybox/left.png","resources/textures/skybox/top.png", \
 "resources/textures/skybox/bottom.png", "resources/textures/skybox/front.png", "resources/textures/skybox/back.png"
@@ -23,8 +24,10 @@
 
 Game::Game(Engine* engine,GameManager* gameManager) : engine(engine), gameManager(gameManager),  snake(&board), pause(false), border(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 0.0f, 0.0f)),
 border2(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 10.0f, 0.0f)), border3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 10.0f)),
-lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1)
+lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1), explosion(glm::vec3(5.0, 5.0, 5.0), EXPLOSION_PARTICLE_INSTANCES)
 {
+	died = false;
+
 	font = ResourceManager::getFont( Fonts::MAIN_FONT );
 
 	initializeShaders();
@@ -123,6 +126,7 @@ void Game::initializeShaders()
 	engine->compileAndLinkShader(&lightSourceShader, "resources/shaders/lightSource.vs", "resources/shaders/lightSource.fs");
 	engine->compileAndLinkShader(&cubemapShader, "resources/shaders/cubeMap.vs", "resources/shaders/cubeMap.fs");
 	engine->compileAndLinkShader(&postProcessShader, "resources/shaders/postProcess.vs", "resources/shaders/postProcess.fs");
+	engine->compileAndLinkShader(&particlesShader, "resources/shaders/particles.vs", "resources/shaders/particles.fs");
 
 	colorShader.use();
 	colorShader.setVec3("lightColor", glm::vec3( 1.0f,1.0f,1.0f ));
@@ -151,6 +155,11 @@ void Game::render()
 		snake.draw(*snakeSegment, colorShader);
 		drawBorders(colorShader);
 
+		// draw explosion
+
+		explosion.draw(particlesShader);
+
+		// draw score text
 
 		font->RenderText(*textShader, scoreText , 10, 10, 1.0f, glm::vec3(0.0,1.0, 0.0) );
 
@@ -170,7 +179,7 @@ void Game::render()
 
 void Game::update(float deltaTime)
 {
-	if (!pause)
+	if (!pause && !died)
 	{
 		Field currentField = snake.move(deltaTime);
 
@@ -190,6 +199,7 @@ void Game::update(float deltaTime)
 	}
 
 	snakeFood->setPosition(foodPos);
+	explosion.update(deltaTime);
 
 	updateViewMatrixInShaders();
 }
@@ -202,16 +212,16 @@ void Game::updateScoreText(int score)
 void Game::gameOver()
 {
 //	engine->requestEngineClose();
-	int pos = gameManager->getgameMenu()->gethighscores().insertNewScore( snake.getsize() );
+	glm::vec3 explosionPoint = snake.gethead().getworldPosition();
+	explosionPoint += glm::vec3(0.5);
+	explosionPoint += (static_cast<glm::vec3> (snake.gethead().getmovementDirection()) * 0.5f);
 
-	resetGame();
-	gameManager->setstate(GameState::MENU);
+	explosion.setorigin(explosionPoint);
+	explosion.generate(EXPLOSION_PARTICLE_INSTANCES, snake.gethead().getmovementDirection());
 
-	if (pos > -1)
-	{
-		gameManager->getgameMenu()->gethighscores().saveToFile();
-		gameManager->getgameMenu()->setmenuOptionSelected(GameState::HIGHSCORES);
-	}
+//	resetGame();
+
+	died = true;
 }
 
 void Game::renderSkyBox()
@@ -275,7 +285,16 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 	}
 	else if (key == GLFW_KEY_ESCAPE)
 	{
-//		engine->requestEngineClose();
+		if (died)
+		{
+			int pos = gameManager->getgameMenu()->gethighscores().insertNewScore(snake.getsize());
+
+			if (pos > -1)
+			{
+				gameManager->getgameMenu()->gethighscores().saveToFile();
+				gameManager->getgameMenu()->setmenuOptionSelected(GameState::HIGHSCORES);
+			}
+		}
 		gameManager->setstate(GameState::MENU);
 	}
 	else if (key == GLFW_KEY_KP_0 && action == GLFW_RELEASE)
@@ -363,6 +382,8 @@ void Game::resetGame()
 	initializeSnake();
 	updateScoreText(snake.getsize());
 
+	died = false;
+
 	cam = Camera();
 	setMovingKeys(cam.getAngle());
 	updateViewMatrixInShaders();
@@ -426,6 +447,9 @@ void Game::updateViewMatrixInShaders()
 	cubemapShader.use();
 	glm::mat4 viewCubeMap = glm::mat4(glm::mat3(cam.getView()));
 	cubemapShader.setMatrix4("view", viewCubeMap);
+
+	particlesShader.use();
+	particlesShader.setMatrix4("view", cam.getView());
 }
 
 void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
@@ -438,6 +462,9 @@ void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
 
 	cubemapShader.use();
 	cubemapShader.setMatrix4("projection", projection);
+
+	particlesShader.use();
+	particlesShader.setMatrix4("projection", projection);
 }
 
 

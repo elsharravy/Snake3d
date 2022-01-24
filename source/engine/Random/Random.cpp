@@ -7,6 +7,13 @@ int Random::randInt(int min, int max)
 	return (rd() % (max-min)) + min;
 }
 
+float Random::randFloat(float min, float max)
+{
+	//	return min + ( static_cast<float>( rd() ) / (static_cast <float>(RAND_MAX) / (max - min)));
+	std::uniform_real_distribution<> dis(min, max);
+	return dis(e);
+}
+
 int* Random::randArrayWithoutRepetitions(int min, int max, int n)
 {
 	if (n < (max - min))
@@ -45,3 +52,4 @@ int* Random::randArrayWithoutRepetitions(int min, int max, int n)
 }
 
 std::random_device Random::rd;
+std::default_random_engine Random::e;

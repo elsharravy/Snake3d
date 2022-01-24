@@ -133,6 +133,12 @@
     <Filter Include="Pliki źródłowe\engine\string">
       <UniqueIdentifier>{cc929e2b-1dbb-47b6-86a4-5bab57d7b919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\engine\particles">
+      <UniqueIdentifier>{b58bcfd7-730e-459f-8af8-af3e603ec9b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\engine\particles">
+      <UniqueIdentifier>{c4fd5b8e-4400-42e5-aac5-a1bc6d34a3e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -261,6 +267,9 @@
     <ClCompile Include="source\engine\string\StringOperations.cpp">
       <Filter>Pliki źródłowe\engine\string</Filter>
     </ClCompile>
+    <ClCompile Include="source\engine\particles\ParticlesGenerator.cpp">
+      <Filter>Pliki źródłowe\engine\particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -385,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="source\engine\string\StringOperations.h">
       <Filter>Pliki nagłówkowe\engine\string</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\particles\ParticlesGenerator.h">
+      <Filter>Pliki nagłówkowe\engine\particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

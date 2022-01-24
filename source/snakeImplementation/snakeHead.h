@@ -6,6 +6,8 @@
 #include "../engine/shaders/shaderProgram.h"
 #include "../engine/primitives/cube.h"
 
+#include "../engine/macros.h"
+
 #include <glm/vec3.hpp>
 #include <queue>
 
@@ -39,6 +41,9 @@ public:
 	void requestDirectionChange(glm::ivec3 movementDirection, glm::ivec3 compensationVector);
 	void draw(Cube& cube, ShaderProgram& shader);
 	void setSnakeVelocity(float velocity);
+
+	GETTER(glm::ivec3, movementDirection);
+	GETTER(glm::vec3, worldPosition);
 };
 
 #endif
