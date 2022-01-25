@@ -94,6 +94,7 @@ class Game
 	void updateViewMatrixInShaders();
 
 	void updateScoreText(int score);
+	int calculateScore( int difficulty, int snakeLength );
 public:
 	Game(Engine* engine, GameManager* gameManager);
 	~Game();

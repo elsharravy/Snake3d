@@ -78,7 +78,7 @@ void Game::initializeSnakeSegment()
 
 void Game::initializeInterface()
 {
-	updateScoreText(snake.getsize());
+	updateScoreText(calculateScore(snake.getsnakeVelocity(), snake.getsize()));
 }
 
 void Game::initializeCubeBorders()
@@ -141,6 +141,11 @@ void Game::initializeShaders()
 	updateProjectionMatrixInShaders(projection);
 }
 
+int Game::calculateScore(int difficulty, int snakeLength)
+{
+	return difficulty * snakeLength;
+}
+
 void Game::render()
 {
 		// switch to off screen framebuffer
@@ -190,7 +195,7 @@ void Game::update(float deltaTime)
 		else if (currentField == Field::FOOD)	// we eat food, we need another in random centerPosition in the world
 		{
 			generateRandomFood();
-			updateScoreText(snake.getsize());
+			updateScoreText( calculateScore( snake.getsnakeVelocity() , snake.getsize()));
 		}
 		else if (currentField == Field::WALL)	// we hit the wall
 		{
@@ -287,7 +292,7 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 	{
 		if (died)
 		{
-			int pos = gameManager->getgameMenu()->gethighscores().insertNewScore(snake.getsize());
+			int pos = gameManager->getgameMenu()->gethighscores().insertNewScore( calculateScore( snake.getsnakeVelocity() ,snake.getsize() ));
 
 			if (pos > -1)
 			{
@@ -386,6 +391,8 @@ void Game::resetGame()
 	died = false;
 
 	explosion = ParticlesGenerator(glm::vec3(5.0, 5.0, 5.0), EXPLOSION_PARTICLE_INSTANCES);
+
+	initializeInterface();
 
 	cam = Camera();
 	setMovingKeys(cam.getAngle());

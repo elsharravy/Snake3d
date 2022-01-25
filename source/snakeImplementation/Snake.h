@@ -29,6 +29,8 @@ public:
 
 	GETTER(int, size);
 	GETTER_REF(SnakeHead, head);
+
+	GETTER(float, snakeVelocity);
 };
 
 #endif
