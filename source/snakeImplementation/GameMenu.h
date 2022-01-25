@@ -60,6 +60,7 @@ public:
 	void setPostProcessEffect(POST_PROCESSING_EFFECT effect);
 
 	GETTER_REF(HighScores, highscores);
+	GETTER_REF(HighscoreScreen, highscoresScreen);
 	GETTER(GameManager*, gameManager);
 	SETTER(GameState, menuOptionSelected);
 };

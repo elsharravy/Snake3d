@@ -292,6 +292,7 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 			if (pos > -1)
 			{
 				gameManager->getgameMenu()->gethighscores().saveToFile();
+				gameManager->getgameMenu()->gethighscoresScreen().setDifferentColor(pos);
 				gameManager->getgameMenu()->setmenuOptionSelected(GameState::HIGHSCORES);
 			}
 		}
@@ -383,6 +384,8 @@ void Game::resetGame()
 	updateScoreText(snake.getsize());
 
 	died = false;
+
+	explosion = ParticlesGenerator(glm::vec3(5.0, 5.0, 5.0), EXPLOSION_PARTICLE_INSTANCES);
 
 	cam = Camera();
 	setMovingKeys(cam.getAngle());

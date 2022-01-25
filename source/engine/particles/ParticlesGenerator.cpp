@@ -91,6 +91,12 @@ void Particle::update(float dT)
 	color.a -= (Random::randFloat( 0.0 , 0.8 ) * dT);
 }
 
+void ParticlesGenerator::clear()
+{
+	point.clearVertices(point.instances);
+	particles.clear();
+}
+
 void ParticlesGenerator::generate(int quantity, glm::ivec3 snakeDirection)
 {
 	float magnitude = 3;

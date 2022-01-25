@@ -42,6 +42,8 @@ class ParticlesGenerator
 		void clearVertices(int reserve);
 
 		void updateBufferData();
+
+		friend class ParticlesGenerator;
 	};
 
 	glm::vec3 origin;
@@ -55,6 +57,8 @@ public:
 
 	void generate( int quantity , glm::ivec3 snakeDirection);
 	void update( float dT );
+	// delete particles
+	void clear();
 	// instanced drawing
 	void draw( ShaderProgram& shader );
 
