@@ -37,6 +37,8 @@ public:
 	void render();
 	void update(float deltaTime);
 
+	void switchToMenu();
+	void switchToGame();
 
 	void mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset);
 	void keyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);

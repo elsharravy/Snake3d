@@ -270,6 +270,9 @@
     <ClCompile Include="source\engine\particles\ParticlesGenerator.cpp">
       <Filter>Pliki źródłowe\engine\particles</Filter>
     </ClCompile>
+    <ClCompile Include="source\engine\resources\Sounds.cpp">
+      <Filter>Pliki źródłowe\engine\resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\glfw\Glfw.h">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="source\engine\particles\ParticlesGenerator.h">
       <Filter>Pliki nagłówkowe\engine\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="source\engine\resources\Sounds.h">
+      <Filter>Pliki nagłówkowe\engine\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

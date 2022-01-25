@@ -4,6 +4,7 @@
 #include "GameManager.h"
 
 #include "../engine/resources/ResourceManager.h"
+#include "../engine/resources/Sounds.h"
 
 
 #include "../engine/engine.h"
@@ -46,6 +47,9 @@ GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameMa
 	options.at(3).setcenterPosition(glm::vec2(960, 200));
 
 	options.at(0).setcolor(SELECTED_OPTION_COLOR);
+
+	initializeMenuMusic();
+	playMenuMusic();
 }
 
 void GameMenu::render()
@@ -107,6 +111,32 @@ void GameMenu::initializeHighscores()
 	highscores.loadFromFile();
 }
 
+void GameMenu::initializeMenuMusic()
+{
+	menuMusic = Sounds::playSound("resources/sounds/luminousfridge__menu_track.mp3", true, true);
+}
+
+void GameMenu::playClick()
+{
+	Sounds::playSound("resources/sounds/click.mp3");
+}
+
+void GameMenu::playSwitch()
+{
+	Sounds::playSound("resources/sounds/change.mp3");
+}
+
+void GameMenu::playMenuMusic()
+{
+	menuMusic->setPlayPosition(0);
+	menuMusic->setIsPaused(false);
+}
+
+void GameMenu::stopMenuMusic()
+{
+	menuMusic->setIsPaused(true);
+}
+
 void GameMenu::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 
@@ -125,6 +155,8 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_RELEASE)
 		{
+			playClick();
+
 			switch (optionFocused)
 			{
 			case 0:
@@ -133,7 +165,9 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 				{
 					gameManager->getgame()->resetGame();
 				}
-				gameManager->setstate(GameState::GAME);
+				
+				gameManager->switchToGame();
+
 				break;
 			}
 			case 1:
@@ -158,6 +192,7 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 		}
 		else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
 		{
+			playSwitch();
 			options.at(optionFocused).resetScale();
 			options.at(optionFocused).setcolor( UNSELECTED_OPTION_COLOR );
 
@@ -171,6 +206,7 @@ void GameMenu::keyEvent(GLFWwindow* window, int key, int scancode, int action, i
 		}
 		else if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
 		{
+			playSwitch();
 			options.at(optionFocused).resetScale();
 			options.at(optionFocused).setcolor(UNSELECTED_OPTION_COLOR);
 

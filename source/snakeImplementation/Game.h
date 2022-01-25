@@ -14,6 +14,8 @@
 #include "board.h"
 #include "../engine/macros.h"
 
+#include <irrklang/irrKlang.h>
+
 class Engine;
 class GameManager;
 
@@ -76,6 +78,8 @@ class Game
 
 	glm::mat4 projection;
 
+	irrklang::ISound* gameMusic;
+
 	void initializeSkyBox();
 	void initializeCamera();
 	void initializeCubeBorders();
@@ -86,6 +90,8 @@ class Game
 	void initializeShaders();
 	void initializePostProcessing();
 	void initializeInterface();
+
+	void initializeGameMusic();
 
 	void setMovingKeys(float angle);
 	void generateRandomFood();
@@ -104,6 +110,13 @@ public:
 
 	void gameOver();
 	void resetGame();
+
+	void playTurnSound();
+	void playCrashSound();
+	void playCollectSound();
+
+	void playGameMusic();
+	void stopGameMusic();
 
 	void renderSkyBox();
 

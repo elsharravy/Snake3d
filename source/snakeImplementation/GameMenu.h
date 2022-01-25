@@ -9,6 +9,8 @@
 #include "HighscoreScreen.h"
 #include "OptionsScreenImpl.h"
 
+#include <irrklang/irrKlang.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/matrix.hpp>
 
@@ -40,17 +42,27 @@ class GameMenu
 
 	int optionFocused;
 
+	void initializeMenuMusic();
+
+	irrklang::ISound* menuMusic;
+
 	std::vector< MenuOption > options;
 
 	glm::mat4 projection;
 
 	void initializeHighscores();
 
+	void playClick();
+	void playSwitch();
+
 public:
 	GameMenu(GameManager* gameManager, Engine* engine);
 	
 	void render();
 	void update(float deltaTime);
+
+	void playMenuMusic();
+	void stopMenuMusic();
 
 	void mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset);
 	void keyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);

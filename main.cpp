@@ -32,8 +32,8 @@ int main()
 		return ERROR_EXIT_CODE;
 	}
 
-//	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE, glfwGetPrimaryMonitor());
-	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE);
+	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE, glfwGetPrimaryMonitor());
+//	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE);
 
 	if (window == NULL)
 	{

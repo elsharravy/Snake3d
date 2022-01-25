@@ -54,6 +54,21 @@ void GameManager::update(float deltaTime)
 	}
 }
 
+void GameManager::switchToMenu()
+{
+	state = GameState::MENU;
+
+	game->stopGameMusic();
+	gameMenu->playMenuMusic();
+}
+void GameManager::switchToGame()
+{
+	state = GameState::GAME;
+
+	gameMenu->stopMenuMusic();
+	game->playGameMusic();
+}
+
 void GameManager::mouseMovedEvent(GLFWwindow* window, double xpos, double ypos, double xoffset, double yoffset)
 {
 	switch (state)

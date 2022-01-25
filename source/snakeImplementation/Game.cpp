@@ -4,6 +4,7 @@
 #include "../engine/engine.h"
 
 #include "../engine/resources/ResourceManager.h"
+#include "../engine/resources/Sounds.h"
 
 #include "GameManager.h"
 #include "GameMenu.h"
@@ -48,6 +49,8 @@ lightSource(0.2,0.2,0.2), skyBoxCube(1, 1, 1), explosion(glm::vec3(5.0, 5.0, 5.0
 	initializeSnakeFood();
 
 	updateViewMatrixInShaders();
+
+	initializeGameMusic();
 }
 
 Game::~Game()
@@ -194,11 +197,13 @@ void Game::update(float deltaTime)
 		}
 		else if (currentField == Field::FOOD)	// we eat food, we need another in random centerPosition in the world
 		{
+			playCollectSound();
 			generateRandomFood();
 			updateScoreText( calculateScore( snake.getsnakeVelocity() , snake.getsize()));
 		}
 		else if (currentField == Field::WALL)	// we hit the wall
 		{
+			playCrashSound();
 			gameOver();
 		}
 	}
@@ -238,6 +243,37 @@ void Game::renderSkyBox()
 	glDepthMask(GL_TRUE);
 }
 
+void Game::initializeGameMusic()
+{
+	gameMusic = Sounds::playSound("resources/sounds/patricklieberkind__main_track.wav", true, true);
+}
+
+void Game::playTurnSound()
+{
+	Sounds::playSound("resources/sounds/turn.mp3");
+}
+
+void Game::playCollectSound()
+{
+	Sounds::playSound("resources/sounds/collect.wav");
+}
+
+void Game::playCrashSound()
+{
+	Sounds::playSound("resources/sounds/crash.mp3" );
+}
+
+void Game::playGameMusic()
+{
+	gameMusic->setPlayPosition(0);
+	gameMusic->setIsPaused(false);
+}
+
+void Game::stopGameMusic()
+{
+	gameMusic->setIsPaused(true);
+}
+
 void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 
@@ -264,28 +300,34 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 		pause = !pause;
 	}
 	// moving snake
-	else if (key == keyForMovingMinusZAxis)
+	else if (key == keyForMovingMinusZAxis && action == GLFW_PRESS)
 	{
+		playTurnSound();
 		snake.requestDirectionChange(glm::ivec3(0, 0, -1), glm::ivec3(0, 0, 1));
 	}
-	else if (key == keyForMovingPlusZAxis)
+	else if (key == keyForMovingPlusZAxis && action == GLFW_PRESS)
 	{
+		playTurnSound();
 		snake.requestDirectionChange(glm::ivec3(0, 0, 1), glm::ivec3(0, 0, 0));
 	}
-	else if (key == keyForMovingMinusXAxis)
+	else if (key == keyForMovingMinusXAxis && action == GLFW_PRESS)
 	{
+		playTurnSound();
 		snake.requestDirectionChange(glm::ivec3(-1, 0, 0), glm::ivec3(1, 0, 0));
 	}
-	else if (key == keyForMovingPlusXAxis)
+	else if (key == keyForMovingPlusXAxis && action == GLFW_PRESS)
 	{
+		playTurnSound();
 		snake.requestDirectionChange(glm::ivec3(1, 0, 0), glm::ivec3(0, 0, 0));
 	}
-	else if (key == GLFW_KEY_Q)
+	else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
 	{
+		playTurnSound();
 		snake.requestDirectionChange(glm::ivec3(0, 1, 0), glm::ivec3(0, 0, 0));
 	}
-	else if (key == GLFW_KEY_E)
+	else if (key == GLFW_KEY_E && action == GLFW_PRESS)
 	{
+		playTurnSound();
 		snake.requestDirectionChange(glm::ivec3(0, -1, 0), glm::ivec3(0, 1, 0));
 	}
 	else if (key == GLFW_KEY_ESCAPE)
@@ -301,7 +343,7 @@ void Game::keyEvent(GLFWwindow* window, int key, int scancode, int action, int m
 				gameManager->getgameMenu()->setmenuOptionSelected(GameState::HIGHSCORES);
 			}
 		}
-		gameManager->setstate(GameState::MENU);
+		gameManager->switchToMenu();
 	}
 	else if (key == GLFW_KEY_KP_0 && action == GLFW_RELEASE)
 	{
