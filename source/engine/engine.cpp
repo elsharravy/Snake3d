@@ -26,12 +26,16 @@
 #include <glm/vec3.hpp>
 
 #include <iostream>
+#include <windows.h>
+
 
 Engine::Engine(GLFWwindow* window) : window(window),  clearColor(Color::White),  yAxis(glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 100.0f, 0.0f)),
 zAxis(glm::vec3(0.0f, 0.0f, -100.0f), glm::vec3(0.0f, 0.0f, 100.0f)),
 xAxis(glm::vec3(-100.0f, 0.0f, 0.0f), glm::vec3(100.0f, 0.0f, 0.0f))
 {
 	callbacksHelperEngine = this;
+
+//	populateScreenSize();
 
 	initializeAxes();
 
@@ -106,6 +110,37 @@ void Engine::drawAxes()
 	xAxis.draw( game->getlightSourceShader() );
 	yAxis.draw(game->getlightSourceShader());
 	zAxis.draw(game->getlightSourceShader());
+}
+
+//void Engine::populateScreenSize()
+//{
+//	RECT desktop;
+//
+//	const HWND hDesktop = GetDesktopWindow();
+//
+//	GetWindowRect(hDesktop, &desktop);
+//
+//	screenWidth = desktop.right;
+//	screenHeigth = desktop.bottom;
+//
+//	std::cout << screenWidth << " " << screenHeigth << std::endl;
+//}
+
+glm::vec2 Engine::getWindowsScreenSize()
+{
+	RECT desktop;
+
+	const HWND hDesktop = GetDesktopWindow();
+
+	GetWindowRect(hDesktop, &desktop);
+
+	glm::vec2 screenSize;
+
+	screenSize.x = desktop.right;
+	screenSize.y = desktop.bottom;
+
+	return screenSize;
+//	std::cout << screenWidth << " " << screenHeigth << std::endl;
 }
 
 void Engine::initializeAxes()
@@ -192,6 +227,8 @@ void Engine::requestEngineClose()
 {
 	glfwSetWindowShouldClose(window, true);
 }
+
+
 
 
 Engine* Engine::callbacksHelperEngine = NULL;

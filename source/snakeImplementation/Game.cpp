@@ -15,6 +15,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vec3.hpp>
 
+
 #define LIGHT_INITIAL_POS glm::vec3(5, 5, 5)
 
 #define EXPLOSION_PARTICLE_INSTANCES 350
@@ -101,7 +102,8 @@ void Game::initializeCamera()
 
 void Game::initializePostProcessing()
 {
-	postProcessFramebuffer.generate(1920, 1080);
+	glm::vec2 screenSize = engine->getscreenSize();
+	postProcessFramebuffer.generate(screenSize.x, screenSize.y);
 
 	setPostProcessEffect(POST_PROCESSING_EFFECT::NONE);
 }

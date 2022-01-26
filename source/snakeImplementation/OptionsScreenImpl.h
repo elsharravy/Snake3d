@@ -16,6 +16,9 @@ class OptionsScreenImpl : public OptionsScreen
 	int mouseSensitivityMIN;
 	int mouseSensitivityMAX;
 
+	void playClick();
+	void playSwitch();
+
 	void loadDifficultyFromFile();
 	void loadMouseSensitivityFromFile();
 

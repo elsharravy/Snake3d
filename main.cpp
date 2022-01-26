@@ -19,7 +19,10 @@
 #define WINDOW_X 1920
 #define WINDOW_Y 1080
 
-#define WINDOW_TITLE "Snake"
+//#define WINDOW_X 1366
+//#define WINDOW_Y 768
+
+#define WINDOW_TITLE "Snake 3d"
 
 int main()
 {
@@ -32,8 +35,10 @@ int main()
 		return ERROR_EXIT_CODE;
 	}
 
-	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE, glfwGetPrimaryMonitor());
-//	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE);
+	glm::vec2 screenSize = Engine::getWindowsScreenSize();
+
+	GLFWwindow* window = Engine::createWindow(screenSize.x, screenSize.y, WINDOW_TITLE, glfwGetPrimaryMonitor());
+//	GLFWwindow* window = Engine::createWindow(WINDOW_X, WINDOW_Y, WINDOW_TITLE, glfwGetPrimaryMonitor());
 
 	if (window == NULL)
 	{

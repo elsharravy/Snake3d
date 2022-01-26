@@ -20,7 +20,7 @@ GameMenu::GameMenu(GameManager* gameManager,Engine* engine) : gameManager(gameMa
 //	engine->compileAndLinkShader(&textShader, "resources/shaders/text/textShader.vs", "resources/shaders/text/textShader.fs");
 	textShader = ResourceManager::getShader(Shaders::TEXT_SHADER);
 
-	projection = glm::ortho(0.0f, 1900.0f, 0.0f, 1080.0f);
+	projection = glm::ortho(0.0f, 1920.0f, 0.0f, 1080.0f);
 	
 	font = ResourceManager::getFont(Fonts::MAIN_FONT);
 
@@ -56,8 +56,7 @@ void GameMenu::render()
 {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-
+	
 	textShader->use();
 	textShader->setMatrix4("projection", projection);
 

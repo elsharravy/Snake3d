@@ -3,6 +3,10 @@
 #include "GameMenu.h"
 #include "GameManager.h"
 
+#include "../engine/resources/Sounds.h"
+
+#define SELECTED_OPTION_COLOR glm::vec3(0.47f, 0.0f, 0.0f)
+#define UNSELECTED_OPTION_COLOR glm::vec3(0.0f, 0.0f, 0.0f)
 
 OptionsScreenImpl::OptionsScreenImpl(GameMenu* menu) : OptionsScreen( menu )
 {
@@ -20,6 +24,8 @@ OptionsScreenImpl::OptionsScreenImpl(GameMenu* menu) : OptionsScreen( menu )
 	options.at(0).setcenterPosition(glm::vec2(960, 800));
 	options.at(1).setcenterPosition(glm::vec2(960, 700));
 	options.at(2).setcenterPosition(glm::vec2(960, 600));
+
+	options.at(0).setcolor(SELECTED_OPTION_COLOR);
 }
 
 void OptionsScreenImpl::loadDifficultyFromFile()
@@ -55,6 +61,8 @@ void OptionsScreenImpl::keyEvent(GLFWwindow* window, int key, int scancode, int 
 {
 	if (key == GLFW_KEY_ENTER && action == GLFW_RELEASE)
 	{
+		playClick();
+
 		switch (optionFocused)
 		{
 		case 0:
@@ -95,6 +103,9 @@ void OptionsScreenImpl::keyEvent(GLFWwindow* window, int key, int scancode, int 
 	}
 	else if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
 	{
+		playSwitch();
+
+		options.at(optionFocused).setcolor(UNSELECTED_OPTION_COLOR);
 		options.at(optionFocused).resetScale();
 
 		optionFocused += 1;
@@ -103,9 +114,14 @@ void OptionsScreenImpl::keyEvent(GLFWwindow* window, int key, int scancode, int 
 		{
 			optionFocused = 0;
 		}
+
+		options.at(optionFocused).setcolor(SELECTED_OPTION_COLOR);
 	}
 	else if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
 	{
+		playSwitch();
+
+		options.at(optionFocused).setcolor(UNSELECTED_OPTION_COLOR);
 		options.at(optionFocused).resetScale();
 
 		optionFocused -= 1;
@@ -114,7 +130,19 @@ void OptionsScreenImpl::keyEvent(GLFWwindow* window, int key, int scancode, int 
 		{
 			optionFocused = (options.size() - 1);
 		}
+
+		options.at(optionFocused).setcolor(SELECTED_OPTION_COLOR);
 	}
+}
+
+void OptionsScreenImpl::playClick()
+{
+	Sounds::playSound("resources/sounds/click.mp3");
+}
+
+void OptionsScreenImpl::playSwitch()
+{
+	Sounds::playSound("resources/sounds/change.mp3");
 }
 
 void OptionsScreenImpl::render()

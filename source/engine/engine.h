@@ -14,6 +14,8 @@
 #include "colors/color.h"
 #include "shaders/shaderProgram.h"
 
+#include <glm/vec2.hpp>
+
 class Game;
 
 class Engine
@@ -60,6 +62,8 @@ public:
 
 	void requestEngineClose();
 	void compileAndLinkShader(ShaderProgram* shader, const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+
+	static glm::vec2 getWindowsScreenSize();
 
 	GETTER(GLFWwindow*, window);
 	GETTER(glm::vec2, screenSize);
