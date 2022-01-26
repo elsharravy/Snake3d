@@ -22,5 +22,5 @@ Esc - escape to menu
 
 ## Music
 
-MENU MUSIC : https://freesound.org/people/luminousfridge/sounds/496193/
+MENU MUSIC : https://freesound.org/people/luminousfridge/sounds/496193/  
 GAME MUSIC : https://freesound.org/people/PatrickLieberkind/sounds/396024/
