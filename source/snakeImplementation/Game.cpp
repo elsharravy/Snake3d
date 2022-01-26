@@ -132,6 +132,7 @@ void Game::initializeShaders()
 	engine->compileAndLinkShader(&cubemapShader, "resources/shaders/cubeMap.vs", "resources/shaders/cubeMap.fs");
 	engine->compileAndLinkShader(&postProcessShader, "resources/shaders/postProcess.vs", "resources/shaders/postProcess.fs");
 	engine->compileAndLinkShader(&particlesShader, "resources/shaders/particles.vs", "resources/shaders/particles.fs");
+	engine->compileAndLinkShader(&borderShader, "resources/shaders/borderShader.vs", "resources/shaders/borderShader.fs");
 
 	colorShader.use();
 	colorShader.setVec3("lightColor", glm::vec3( 1.0f,1.0f,1.0f ));
@@ -161,10 +162,22 @@ void Game::render()
 
 		renderSkyBox();
 
-		snakeFood->draw(colorShader);
 		snake.draw(*snakeSegment, colorShader);
-		drawBorders(colorShader);
 
+		//		snakeFood->draw(colorShader);
+		// drawing snake food
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilFunc(GL_ALWAYS, 1, 0xff);
+		glStencilMask(0xff);
+		snakeFood->draw(colorShader);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xff);
+		glDisable(GL_DEPTH_TEST);
+		snakeFood->draw(borderShader);
+		glStencilFunc(GL_ALWAYS, 1, 0xff);
+		glEnable(GL_DEPTH_TEST);
+
+
+		drawBorders(colorShader);
 		// draw explosion
 
 		explosion.draw(particlesShader);
@@ -195,6 +208,7 @@ void Game::update(float deltaTime)
 
 		if (currentField == Field::SNAKE)	// we hit snake body, we lose
 		{
+			playCrashSound();
 			gameOver();
 		}
 		else if (currentField == Field::FOOD)	// we eat food, we need another in random centerPosition in the world
@@ -238,6 +252,7 @@ void Game::gameOver()
 
 void Game::renderSkyBox()
 {
+	glStencilMask(0x00);
 	glDepthMask(GL_FALSE);
 	glActiveTexture(GL_TEXTURE0);
 	skyBox.activate();
@@ -498,6 +513,9 @@ void Game::updateViewMatrixInShaders()
 	lightSourceShader.use();
 	lightSourceShader.setMatrix4("view", cam.getView());
 
+	borderShader.use();
+	borderShader.setMatrix4("view", cam.getView());
+
 	cubemapShader.use();
 	glm::mat4 viewCubeMap = glm::mat4(glm::mat3(cam.getView()));
 	cubemapShader.setMatrix4("view", viewCubeMap);
@@ -513,6 +531,9 @@ void Game::updateProjectionMatrixInShaders(glm::mat4 projection)
 
 	lightSourceShader.use();
 	lightSourceShader.setMatrix4("projection", projection);
+
+	borderShader.use();
+	borderShader.setMatrix4("projection", projection);
 
 	cubemapShader.use();
 	cubemapShader.setMatrix4("projection", projection);

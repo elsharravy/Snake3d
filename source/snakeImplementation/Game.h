@@ -39,6 +39,7 @@ class Game
 	ShaderProgram cubemapShader;
 	ShaderProgram postProcessShader;
 	ShaderProgram particlesShader;
+	ShaderProgram borderShader;
 
 	ShaderProgram* textShader;
 
