@@ -25,4 +25,4 @@ Esc - escape to menu
 MENU MUSIC : https://freesound.org/people/luminousfridge/sounds/496193/  
 GAME MUSIC : https://freesound.org/people/PatrickLieberkind/sounds/396024/ 
 
-![ds](https://drive.google.com/file/d/1oibQkhPNqam4KQOermQvckt-rtg_fOFl/view?usp=sharing)
+![Snake](https://i.ibb.co/L5Qgf6x/snake.png)
